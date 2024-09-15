@@ -1,0 +1,6 @@
+@NekretnineZellAmSee_HostAddress = http://localhost:5253
+
+GET {{NekretnineZellAmSee_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
