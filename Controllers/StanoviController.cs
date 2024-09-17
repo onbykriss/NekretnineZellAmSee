@@ -21,12 +21,18 @@ namespace NekretnineZellAmSee.Controllers
             return Ok(_context.Stanovi);
         }
 
+        //*************************************************************************************
+
+
         [HttpGet]
         [Route("{sifra:int}")]
         public IActionResult GetBySifra(int sifra)
         {
             return Ok(_context.Stanovi.Find(sifra));
         }
+
+        //*************************************************************************************
+
 
         [HttpPost]
         public IActionResult Post(Stan Stanovi)
@@ -35,6 +41,8 @@ namespace NekretnineZellAmSee.Controllers
             _context.SaveChanges();
             return StatusCode(StatusCodes.Status201Created, Stanovi);
         }
+        
+        //*************************************************************************************
 
         [HttpPut]
         [Route("{sifra:int}")]
@@ -55,6 +63,8 @@ namespace NekretnineZellAmSee.Controllers
 
             return Ok(new { poruka = "Uspješno promjenjeno" });
         }
+
+        //*************************************************************************************
 
         [HttpDelete]
         [Route("{sifra:int}")]
