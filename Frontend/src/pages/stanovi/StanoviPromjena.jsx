@@ -23,7 +23,7 @@ export default function StanoviPromjena() {
     }, [idstanovi]);
 
     async function promjena(stan) {
-        const odgovor = await StanoviService.promjena(idstanovi, stan);
+        const odgovor = await StanoviService.promjena(idstanovi, stan);  //šta je stan =
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
@@ -51,22 +51,34 @@ export default function StanoviPromjena() {
             <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>Kvadratura</Form.Label>
-                    <Form.Control type="number" min={10} max={5000} name="kvadratura" required defaultValue={stan.kvadratura}/>
+                    <Form.Control 
+                    type="number" min={10} max={5000} 
+                    name="kvadratura" 
+                    required defaultValue={stan.kvadratura}/>
                 </Form.Group>
 
                 <Form.Group controlId="adresa">
                     <Form.Label>Adresa</Form.Label>
-                    <Form.Control type="text" name="adresa" required defaultValue={stan.adresa}/>
+                    <Form.Control 
+                    type="text" 
+                    name="adresa" 
+                    required defaultValue={stan.adresa}/>
                 </Form.Group>
 
                 <Form.Group controlId="oprema">
                     <Form.Label>Oprema</Form.Label>
-                    <Form.Control type="text" name="oprema" required defaultValue={stan.oprema}/>
+                    <Form.Control 
+                    type="text" 
+                    name="oprema" 
+                    required defaultValue={stan.oprema}/>
                 </Form.Group>
 
                 <Form.Group controlId="slika">
                     <Form.Label>Slika</Form.Label>
-                    <Form.Control type="text" name="slika" defaultValue={stan.slika}/>
+                    <Form.Control 
+                    type="text" 
+                    name="slika" 
+                    defaultValue={stan.slika}/>
                 </Form.Group>
 
                 <hr />

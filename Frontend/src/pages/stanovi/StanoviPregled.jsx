@@ -1,27 +1,25 @@
 import { useEffect, useState } from "react";
 import StanoviService from "../../services/StanoviService";
 import { Button, Table } from "react-bootstrap";
-import { NumericFormat } from "react-number-format";
-import moment from "moment";
-import { GrValidate } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
 export default function StanoviPregled() {
     const navigate = useNavigate();
     const [stanovi, setStanovi] = useState([]);
-
-    async function dohvatiStanovi() {
+    async function dohvatiStanovi() 
+    {
         const odgovor = await StanoviService.get();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
-        setStanovi(odgovor.poruka);
+        setStanovi(Array.isArray(odgovor.poruka) ? odgovor.poruka : []);
     }
 
     useEffect(() => {
         dohvatiStanovi();
+        console.log('stanovi:', stanovi);
     }, []);
 
     function obrisi(sifra) {
@@ -58,7 +56,9 @@ export default function StanoviPregled() {
                     </tr>
                 </thead>
                 <tbody>
-                    {stanovi && stanovi.map((stan, index) => (
+                {Array.isArray(stanovi) && stanovi.map((stan, index) => { 
+                      console.log('Stan:', stan);;
+                    return (
                         <tr key={index}>
                             <td>{stan.kvadratura}</td>
                             <td>{stan.adresa}</td>
@@ -70,7 +70,8 @@ export default function StanoviPregled() {
                                 <Button variant="primary" onClick={() => navigate(`/stanovi/promjena/${stan.idstanovi}`)}>Promjena</Button>
                             </td>
                         </tr>
-                    ))}
+                    );
+                   })}    
                 </tbody>
             </Table>
         </>

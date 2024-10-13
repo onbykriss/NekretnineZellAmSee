@@ -33,7 +33,7 @@ export default function StanoviDodaj() {
 
     return (
         <>
-            Dodavanje stanova
+            Dodavanje Stanova
             <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>kvadratura</Form.Label>
@@ -68,7 +68,6 @@ export default function StanoviDodaj() {
                     <Form.Control
                         type="text"
                         name="slika"
-                        required
                     />
                 </Form.Group>
 

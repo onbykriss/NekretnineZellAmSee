@@ -9,10 +9,8 @@ namespace NekretnineZellAmSee.Controllers
     [ApiController]
     [Route("api/v1/[controller]")]
     public class StanController(NekretnineZellAmSeeContext context, IMapper mapper) : NekretnineZellAmSeeController(context,mapper)
-
     {
         //RUTE
-
         [HttpGet]
         public ActionResult<List<StanDTORead>> Get()
         {
