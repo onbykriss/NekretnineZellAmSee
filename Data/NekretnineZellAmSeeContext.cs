@@ -3,12 +3,9 @@ using NekretnineZellAmSee.Models;
 
 namespace NekretnineZellAmSee.Data
 {
-    public class NekretnineContext : DbContext
+    public class NekretnineZellAmSeeContext(DbContextOptions<NekretnineZellAmSeeContext> opcije) : DbContext(opcije)
     {
-        public NekretnineContext(DbContextOptions<NekretnineContext> opcije) : base(opcije)
-        {
-        }
-
         public DbSet<Stan> Stanovi { get; set; }
+        public DbSet<Zakupac> Zakupci { get; set; }
     }
 }

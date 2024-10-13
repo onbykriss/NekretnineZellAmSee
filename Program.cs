@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NekretnineZellAmSee.Data;
+using NekretnineZellAmSee.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // dodavanje baze podataka
-builder.Services.AddDbContext<NekretnineContext>(opcije =>
+builder.Services.AddDbContext<NekretnineZellAmSeeContext>(opcije =>
 {
     opcije.UseSqlServer(builder.Configuration.GetConnectionString("NekretnineContext"));
 });
@@ -25,6 +26,13 @@ builder.Services.AddCors(opcije =>
             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
     );
 });
+
+
+// automapper
+builder.Services.AddAutoMapper(typeof(NekretnineZellAmSeeMappingProfile));
+
+
+
 
 var app = builder.Build();
 
