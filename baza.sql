@@ -1,4 +1,4 @@
--- Zamjeniti db_a98acf_edunovawp5 s imenom svoje baze
+
 
 SELECT name, collation_name FROM sys.databases;
 GO

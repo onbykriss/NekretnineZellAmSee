@@ -1,7 +1,7 @@
 import { HttpService } from "./HttpService";
 
 async function get(){
-    return await HttpService.get('/Stanovi')  //('/Stanovi') je ruta
+    return await HttpService.get('/Stan')  //('/Stanovi') je ruta
     .then((odgovor)=>{
         //console.log(odgovor.data)
         //console.table(odgovor.data)
@@ -14,7 +14,7 @@ async function get(){
 }
 
 async function brisanje(sifra){
-    return await HttpService.delete('/Stanovi/' + sifra)
+    return await HttpService.delete('/Stan/' + sifra)
     .then(()=>{
         return {greska: false, poruka: 'Obrisano'}
     })
@@ -25,7 +25,7 @@ async function brisanje(sifra){
 
 
 async function dodaj(stan){
-    return await HttpService.post('/Stanovi',stan)
+    return await HttpService.post('/Stan',stan)
     .then(()=>{
         return {greska: false, poruka: 'Dodano'}
     })
@@ -35,7 +35,7 @@ async function dodaj(stan){
 }
 
 async function promjena(sifra,stan){
-    return await HttpService.put('/Stanovi/' + sifra,stan)
+    return await HttpService.put('/Stan/' + sifra,stan)
     .then(()=>{
         return {greska: false, poruka: 'Dodano'}
     })
@@ -46,7 +46,7 @@ async function promjena(sifra,stan){
 
 
 async function getBySifra(sifra){
-    return await HttpService.get('/Stanovi/'+sifra)
+    return await HttpService.get('/Stan/'+sifra)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })

@@ -1,7 +1,7 @@
 import { HttpService } from "./HttpService";
 
 async function get() {
-    return await HttpService.get('/Zakupci')
+    return await HttpService.get('/Zakupac')
         .then((odgovor) => {
             return odgovor.data;
         })
@@ -11,7 +11,7 @@ async function get() {
 }
 
 async function getBySifra(sifra) {
-    return await HttpService.get('/Zakupci/' + sifra)
+    return await HttpService.get('/Zakupac/' + sifra)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data };
         })
@@ -21,7 +21,7 @@ async function getBySifra(sifra) {
 }
 
 async function obrisi(sifra) {
-    return await HttpService.delete('/Zakupci/' + sifra)
+    return await HttpService.delete('/Zakupac/' + sifra)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data };
         })
@@ -31,7 +31,7 @@ async function obrisi(sifra) {
 }
 
 async function dodaj(Zakupac) {
-    return await HttpService.post('/Zakupci', Zakupac)
+    return await HttpService.post('/Zakupac', Zakupac)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data };
         })
@@ -50,7 +50,7 @@ async function dodaj(Zakupac) {
 }
 
 async function promjena(sifra, Zakupac) {
-    return await HttpService.put('/Zakupci/' + sifra, Zakupac)
+    return await HttpService.put('/Zakupac/' + sifra, Zakupac)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data };
         })
