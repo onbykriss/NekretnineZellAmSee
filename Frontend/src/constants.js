@@ -8,6 +8,11 @@ export const RouteNames = {
 
     ZAKUPCI_PREGLED: '/Zakupci',
     ZAKUPCI_NOVI: '/Zakupci/dodaj',
-    ZAKUPCI_PROMJENA: '/Zakupci/:Idzakupci'
+    ZAKUPCI_PROMJENA: '/Zakupci/:Idzakupci',
+    
+    NAJMOVI_PREGLED: '/Najmovi',
+    NAJMOVI_NOVI: '/Najmovi/dodaj',
+    NAJMOVI_PROMJENA: '/Najmovi/:idnajmovi'
+    
 }
 export const BACKEND_URL = 'https://kristinandric-001-site1.etempurl.com/api/v1';

@@ -1,78 +1,80 @@
-import StanoviService from "../../services/StanoviService";
+import NajmoviService from "../../services/NajmoviService";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
-export default function StanoviDodaj() {
-
+export default function NajmoviDodaj() {
+    
     const navigate = useNavigate();
 
-    async function Dodaj(stan) {
-        
-        //console.log(stan)
-        //console.log(JSON.stringify(stan))
-        const odgovor = await StanoviService.dodaj(stan)
+    async function Dodaj(najam) {
+  
+
+
+        const odgovor = await NajmoviService.dodaj(najam)
         if(odgovor.greska){
             alert(odgovor.poruka)
             return;
         }
-        navigate(RouteNames.STANOVI_PREGLED)
+        navigate(RouteNames.NAJMOVI_PREGLED)
     }
 
     async function obradiSubmit(e) {
         e.preventDefault();
         let podaci = new FormData(e.target)
         Dodaj({
-            kvadratura: parseFloat(podaci.get('kvadratura')),
-            adresa: podaci.get('adresa'),
-            oprema: podaci.get('oprema'),
-            slika: podaci.get('slika')
+            datum: podaci.get('datum'),
+            trajanje: parseInt(podaci.get('trajanje')),
+            stanovi_idstanovi: parseInt(podaci.get('stanovi_idstanovi')),
+            zakupci_Idzakupci: parseInt(podaci.get('zakupci_Idzakupci'))
         })
     }
 
     return (
         <>
-            Dodavanje Stanova
+            Dodavanje Najmova
             <Form onSubmit={obradiSubmit}>
-                <Form.Group controlId="kvadratura">
-                    <Form.Label>kvadratura</Form.Label>
+                <Form.Group controlId="datum">
+                    <Form.Label>datum</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="datum"
+                        required
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="trajanje">
+                    <Form.Label>trajanje</Form.Label>
                     <Form.Control
                         type="number"
-                        step={0.01}
-                        name="kvadratura"
+                        name="trajanje"
                         required
                     />
                 </Form.Group>
 
-                <Form.Group controlId="adresa">
-                    <Form.Label>adresa</Form.Label>
+                <Form.Group controlId="stanovi_idstanovi">
+                    <Form.Label>stanovi_idstanovi</Form.Label>
                     <Form.Control
-                        type="text"
-                        name="adresa"
+                        type="number"
+                        name="stanovi_idstanovi"
                         required
                     />
                 </Form.Group>
 
-                <Form.Group controlId="oprema">
-                    <Form.Label>oprema</Form.Label>
+                <Form.Group controlId="zakupci_Idzakupci">
+                    <Form.Label>zakupci_Idzakupci</Form.Label>
                     <Form.Control
-                        type="text"
-                        name="oprema"
+                        type="number"
+                        name="zakupci_Idzakupci"
                         required
                     />
                 </Form.Group>
 
-                <Form.Group controlId="slika">
-                    <Form.Label>slika</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="slika"
-                    />
-                </Form.Group>
+
 
                 <Row className="akcije">
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>
-                        <Link to={RouteNames.STANOVI_PREGLED} className="btn btn-danger">
+                        <Link to={RouteNames.NAJMOVI_PREGLED} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>

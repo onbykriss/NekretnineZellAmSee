@@ -31,19 +31,18 @@ export default function NavBarNekretnine() {
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                   NekretnineZellAmSee App
                 </Offcanvas.Title>
+
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="https://kristinandric-001-site1.etempurl.com/swagger/index.html" target="_blank">Swagger</Nav.Link>
-                  <NavDropdown title="Nekretnine" id="basic-nav-dropdown">
-
-                    <NavDropdown.Item onClick={()=>navigate(RouteNames.STANOVI_PREGLED)} >Stanovi</NavDropdown.Item>
-
-                    <NavDropdown.Item onClick={()=>navigate(RouteNames.ZAKUPCI_PREGLED)}>Zakupci</NavDropdown.Item>
-
-                    <NavDropdown.Item href="#action/3">Najmovi</NavDropdown.Item></NavDropdown>
+                   <Nav.Link href="https://kristinandric-001-site1.etempurl.com/swagger/index.html" target="_blank">Swagger</Nav.Link>
+                    <NavDropdown title="Nekretnine" id="basic-nav-dropdown">
+                     <NavDropdown.Item onClick={()=>navigate(RouteNames.STANOVI_PREGLED)} >Stanovi</NavDropdown.Item>
+                     <NavDropdown.Item onClick={()=>navigate(RouteNames.ZAKUPCI_PREGLED)}>Zakupci</NavDropdown.Item>
+                     <NavDropdown.Item onClick={()=>navigate(RouteNames.NAJMOVI_PREGLED)}>Najmovi</NavDropdown.Item>
+                    </NavDropdown>
                 </Nav>
-                <Form className="d-flex">
+               <Form className="d-flex">
                 </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

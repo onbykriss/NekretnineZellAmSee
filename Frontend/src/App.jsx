@@ -11,6 +11,9 @@ import StanoviPromjena from './pages/stanovi/StanoviPromjena';
 import ZakupciPregled from './pages/zakupci/ZakupciPregled';
 import ZakupciDodaj from './pages/zakupci/ZakupciDodaj';
 import ZakupciPromjena from './pages/zakupci/ZakupciPromjena';
+import NajmoviPregled from './pages/najmovi/NajmoviPregled';
+import NajmoviDodaj from './pages/najmovi/NajmoviDodaj';
+import NajmoviPromjena from './pages/najmovi/NajmoviPromjena';
 
 
 function App() {
@@ -29,6 +32,11 @@ function App() {
         <Route path={RouteNames.ZAKUPCI_PREGLED} element={<ZakupciPregled />} />  
         <Route path={RouteNames.ZAKUPCI_NOVI} element={<ZakupciDodaj />} />
         <Route path="/zakupci/promjena/:idzakupci" element={<ZakupciPromjena />} />
+         
+        <Route path={RouteNames.NAJMOVI_PREGLED} element={<NajmoviPregled />} />
+        <Route path={RouteNames.NAJMOVI_NOVI} element={<NajmoviDodaj />} />
+        <Route path="/najmovi/promjena/:idnajmovi" element={<NajmoviPromjena />} />
+        
       </Routes>
       <hr/>
       &copy; Nekretnine Zell am See 2024
