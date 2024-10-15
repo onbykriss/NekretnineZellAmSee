@@ -7,5 +7,20 @@ namespace NekretnineZellAmSee.Data
     {
         public DbSet<Stan> Stanovi { get; set; }
         public DbSet<Zakupac> Zakupci { get; set; }
+
+        public DbSet<Najam> Najmovi { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Implementacija veze 1:n između Stanovi i Najmovi
+            modelBuilder.Entity<Najam>()
+                .HasOne(n => n.Stan);
+
+
+            // Implementacija veze 1:n između Zakupci i Najmovi
+            modelBuilder.Entity<Najam>()
+                .HasOne(n => n.Zakupac);
+                
+        }
     }
 }
