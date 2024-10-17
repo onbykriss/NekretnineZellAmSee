@@ -11,6 +11,8 @@ namespace NekretnineZellAmSee.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);                                 //Falio mi je ovaj kod
+
             // Implementacija veze 1:n između Stanovi i Najmovi
             modelBuilder.Entity<Najam>().HasOne(n => n.Stan);
 

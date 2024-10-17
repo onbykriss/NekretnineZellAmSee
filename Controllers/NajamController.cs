@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NekretnineZellAmSee.Data;
 using NekretnineZellAmSee.Models;
 using NekretnineZellAmSee.Models.DTO;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace NekretnineZellAmSee.Controllers
 {
@@ -22,8 +20,6 @@ namespace NekretnineZellAmSee.Controllers
             _mapper = mapper;
         }
 
-        
-
         [HttpGet]
         public ActionResult<List<NajamDTORead>> Get()
         {
@@ -33,7 +29,13 @@ namespace NekretnineZellAmSee.Controllers
             }
             try
             {
-                return Ok(_mapper.Map<List<NajamDTORead>>(_context.Najmovi.Include(g => g.Stan).Include(g => g.Zakupac)));
+                var najmovi = _context.Najmovi
+                    .Include(n => n.Stan)
+                    .Include(n => n.Zakupac)
+                    .ToList();
+
+                var najmoviDTO = _mapper.Map<List<NajamDTORead>>(najmovi);
+                return Ok(najmoviDTO);
             }
             catch (Exception ex)
             {
@@ -41,35 +43,39 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
-        //***********************************************************************************************************
-        
+        //*************************************************************************************************************
 
-        [HttpGet]
-        [Route("{sifra:int}")]
-        public ActionResult<NajamDTOInsertUpdate> GetBySifra(int sifra)
+        [HttpGet("{idnajmovi:int}")]
+        public ActionResult<NajamDTORead> GetBySifra(int idnajmovi)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { poruka = ModelState });
             }
+
+            Najam? najam;
             try
             {
-                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(g => g.Idnajmovi == sifra);
-                if (e == null)
-                {
-                    return NotFound(new { poruka = "Najam ne postoji u bazi" });
-                }
-                return Ok(_mapper.Map<NajamDTOInsertUpdate>(e));
+                najam = _context.Najmovi
+                    .Include(n => n.Stan)
+                    .Include(n => n.Zakupac)
+                    .FirstOrDefault(n => n.Idnajmovi == idnajmovi);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { poruka = ex.Message });
             }
+
+            if (najam == null)
+            {
+                return NotFound(new { poruka = "Najam ne postoji u bazi" });
+            }
+
+            return Ok(_mapper.Map<NajamDTORead>(najam));
         }
 
-        //***********************************************************************************************************
-         //POST NE RADI!!!
-        //************************************************************************************************************
+        //**********************************************************************************************************
+
         [HttpPost]
         public IActionResult Post(NajamDTOInsertUpdate dto)
         {
@@ -77,18 +83,34 @@ namespace NekretnineZellAmSee.Controllers
             {
                 return BadRequest(new { poruka = ModelState });
             }
+
+            Stan? stan;
+            Zakupac? zakupac;
+
+
             try
             {
-                var es = _context.Stanovi.Find(dto.Idstanovi);
-                if (es == null)
-                {
-                    return NotFound(new { poruka = "Stan na najmovima ne postoji u bazi" });
-                }
-                var e = _mapper.Map<Najam>(dto);
-                e.Stan = es;
-                _context.Najmovi.Add(e);
+                stan = _context.Stanovi.Find(dto.Idstanovi);
+                zakupac = _context.Zakupci.Find(dto.Idzakupci);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { poruka = ex.Message });
+            }
+
+            if (stan == null || zakupac == null)
+            {
+                return NotFound(new { poruka = "Stan ili zakupac ne postoji u bazi" });
+            }
+
+            try
+            {
+                var najam = _mapper.Map<Najam>(dto);
+                najam.Stan = stan;
+                najam.Zakupac = zakupac;
+                _context.Najmovi.Add(najam);
                 _context.SaveChanges();
-                return StatusCode(StatusCodes.Status201Created, _mapper.Map<NajamDTORead>(e));
+                return CreatedAtAction(nameof(GetBySifra), new { idnajmovi = najam.Idnajmovi }, _mapper.Map<NajamDTORead>(najam));
             }
             catch (Exception ex)
             {
@@ -96,14 +118,65 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
-        //************************************************************************************************************
-        //PUT NE RADI!!!
-        //***********************************************************************************************************
+        //****************************************************************************************************************
 
-        [HttpPut]
-        [Route("{sifra:int}")]
+        [HttpPut("{idnajmovi:int}")]
         [Produces("application/json")]
-        public IActionResult Put(int sifra, NajamDTOInsertUpdate dto)
+        public IActionResult Put(int idnajmovi, NajamDTOInsertUpdate dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { poruka = ModelState });
+            }
+
+            Najam? najam;
+            try
+            {
+                najam = _context.Najmovi
+                    .Include(n => n.Stan)
+                    .Include(n => n.Zakupac)
+                    .FirstOrDefault(n => n.Idnajmovi == idnajmovi);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { poruka = ex.Message });
+            }
+
+            if (najam == null)
+            {
+                return NotFound(new { poruka = "Najam ne postoji u bazi" });
+            }
+
+            Stan? stan;
+            Zakupac? zakupac;
+            try
+            {
+                stan = _context.Stanovi.Find(dto.Idstanovi);
+                zakupac = _context.Zakupci.Find(dto.Idzakupci);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { poruka = ex.Message });
+            }
+
+            if (stan == null || zakupac == null)
+            {
+                return NotFound(new { poruka = "Stan ili zakupac ne postoji u bazi" });
+            }
+
+            najam = _mapper.Map(dto, najam);
+            najam.Stan = stan;
+            najam.Zakupac = zakupac;
+            _context.Najmovi.Update(najam);
+            _context.SaveChanges();
+            return Ok(new { poruka = "Uspješno promijenjeno" });
+        }
+
+        //**************************************************************************************************************
+
+        [HttpDelete("{idnajmovi:int}")]
+        [Produces("application/json")]
+        public IActionResult Delete(int idnajmovi)
         {
             if (!ModelState.IsValid)
             {
@@ -111,49 +184,20 @@ namespace NekretnineZellAmSee.Controllers
             }
             try
             {
-                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(x => x.Idnajmovi == sifra);
-                if (e == null)
+                Najam? najam;
+                try
+                {
+                    najam = _context.Najmovi.Find(idnajmovi);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { poruka = ex.Message });
+                }
+                if (najam == null)
                 {
                     return NotFound(new { poruka = "Najam ne postoji u bazi" });
                 }
-                var es = _context.Stanovi.Find(dto.Idstanovi);
-                if (es == null)
-                {
-                    return NotFound(new { poruka = "Stan na najmovima ne postoji u bazi" });
-                }
-                e = _mapper.Map(dto, e);
-                e.Stan = es;
-                _context.Najmovi.Update(e);
-                _context.SaveChanges();
-                return Ok(new { poruka = "Uspješno promjenjeno" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { poruka = ex.Message });
-            }
-        }
-
-        //******************************************************************************************************+****
-        //***********************************************************************************************************
-      
-
-        [HttpDelete]
-        [Route("{sifra:int}")]
-        [Produces("application/json")]
-        public IActionResult Delete(int sifra)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { poruka = ModelState });
-            }
-            try
-            {
-                var e = _context.Najmovi.Find(sifra);
-                if (e == null)
-                {
-                    return NotFound("Najam ne postoji u bazi");
-                }
-                _context.Najmovi.Remove(e);
+                _context.Najmovi.Remove(najam);
                 _context.SaveChanges();
                 return Ok(new { poruka = "Uspješno obrisano" });
             }
@@ -162,8 +206,5 @@ namespace NekretnineZellAmSee.Controllers
                 return BadRequest(new { poruka = ex.Message });
             }
         }
-
-        
-
     }
 }

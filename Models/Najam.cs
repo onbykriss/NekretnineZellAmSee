@@ -12,11 +12,9 @@ namespace NekretnineZellAmSee.Models
         public int? Idnajmovi { get; set; }
 
         [ForeignKey("Idstanovi")]
-        [Column("idstanovi")]
         public Stan Stan { get; set; }
 
         [ForeignKey("Idzakupci")]
-        [Column("idzakupci")]
         public Zakupac Zakupac{ get; set; }
 
         public DateTime? DatumPocetka { get; set; }

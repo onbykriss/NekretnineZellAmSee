@@ -8,7 +8,6 @@ namespace NekretnineZellAmSee.Mapping
     {
         public NekretnineZellAmSeeMappingProfile()
         {
-            // kreiramo mapiranja: izvor, odredište
             CreateMap<Stan, StanDTORead>();
             CreateMap<StanDTOInsertUpdate, Stan>();
 
@@ -16,9 +15,8 @@ namespace NekretnineZellAmSee.Mapping
             CreateMap<ZakupacDTOInsertUpdate, Zakupac>();
 
             CreateMap<Najam, NajamDTORead>()
-            .ForCtorParam("StanAdresaNaziv", opt => opt.MapFrom(src => src.Stan.Adresa))
-
-            .ForCtorParam("ZakupacImePrezime", opt => opt.MapFrom(src => src.Zakupac.Ime + " " + src.Zakupac.Prezime));
+                .ForCtorParam("StanAdresaNaziv", opt => opt.MapFrom(src => src.Stan.Adresa))
+                .ForCtorParam("ZakupacImePrezime", opt => opt.MapFrom(src => src.Zakupac.Ime + " " + src.Zakupac.Prezime));
 
             CreateMap<NajamDTOInsertUpdate, Najam>();
         }
