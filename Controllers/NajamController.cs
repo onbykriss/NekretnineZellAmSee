@@ -22,7 +22,7 @@ namespace NekretnineZellAmSee.Controllers
             _mapper = mapper;
         }
 
-      
+        
 
         [HttpGet]
         public ActionResult<List<NajamDTORead>> Get()
@@ -41,7 +41,8 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
-       //***********************************************************************************************************
+        //***********************************************************************************************************
+        
 
         [HttpGet]
         [Route("{sifra:int}")]
@@ -53,7 +54,7 @@ namespace NekretnineZellAmSee.Controllers
             }
             try
             {
-                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(g => g.Idnajam == sifra);
+                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(g => g.Idnajmovi == sifra);
                 if (e == null)
                 {
                     return NotFound(new { poruka = "Najam ne postoji u bazi" });
@@ -67,7 +68,8 @@ namespace NekretnineZellAmSee.Controllers
         }
 
         //***********************************************************************************************************
-
+         //POST NE RADI!!!
+        //************************************************************************************************************
         [HttpPost]
         public IActionResult Post(NajamDTOInsertUpdate dto)
         {
@@ -94,6 +96,8 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
+        //************************************************************************************************************
+        //PUT NE RADI!!!
         //***********************************************************************************************************
 
         [HttpPut]
@@ -107,7 +111,7 @@ namespace NekretnineZellAmSee.Controllers
             }
             try
             {
-                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(x => x.Idnajam == sifra);
+                var e = _context.Najmovi.Include(g => g.Stan).FirstOrDefault(x => x.Idnajmovi == sifra);
                 if (e == null)
                 {
                     return NotFound(new { poruka = "Najam ne postoji u bazi" });
@@ -129,7 +133,9 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
+        //******************************************************************************************************+****
         //***********************************************************************************************************
+      
 
         [HttpDelete]
         [Route("{sifra:int}")]
@@ -157,17 +163,7 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
-        //***********************************************************************************************************
-
- 
-
-        //***********************************************************************************************************
-
-
         
-        //***********************************************************************************************************
 
-       
-        
     }
 }

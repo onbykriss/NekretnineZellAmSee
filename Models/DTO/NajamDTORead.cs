@@ -3,12 +3,20 @@
 
     public record NajamDTORead(
 
-             int? Idnajam,
-             DateTime? DatumPocetka,
-             DateTime? DatumZavrsetka,
-             decimal? Cijena,
-             string? StanAdresaNaziv,
-             string? ZakupacImePrezime
+       int? Idnajmovi,
+
+       string? StanAdresaNaziv,
+
+       string? ZakupacImePrezime,
+
+       DateTime? DatumPocetka,
+
+       DateTime? DatumZavrsetka,
+
+       decimal? CijenaNajma
+
+
+
     );
 
 }

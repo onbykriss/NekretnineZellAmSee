@@ -30,13 +30,13 @@ export default function StanoviPregled() {
     }
 
     async function brisanjeStanovi(sifra) {
-        console.log('Deleting property with ID:', sifra); // Debugging log
+        console.log('Brisanje stanova s šifrom:', sifra); // Debugging log
         const odgovor = await StanoviService.brisanje(sifra);
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
-        alert('Property deleted successfully');
+        alert('Uspješno obrisano');
         dohvatiStanovi();
     }
 

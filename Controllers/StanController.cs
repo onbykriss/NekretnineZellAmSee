@@ -8,7 +8,7 @@ namespace NekretnineZellAmSee.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class StanController(NekretnineZellAmSeeContext context, IMapper mapper) : NekretnineZellAmSeeController(context,mapper)
+    public class StanController(NekretnineZellAmSeeContext context, IMapper mapper) : NekretnineZellAmSeeController(context, mapper)
     {
         //RUTE
         [HttpGet]
@@ -80,7 +80,7 @@ namespace NekretnineZellAmSee.Controllers
                 return BadRequest(new { poruka = ex.Message });
             }
         }
-        
+
         //*************************************************************************************
 
         [HttpPut]

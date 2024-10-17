@@ -28,6 +28,8 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
+        //************************************************************************************************************************
+
         [HttpGet]
         [Route("{sifra:int}")]
         public ActionResult<ZakupacDTORead> GetBySifra(int sifra)
@@ -52,6 +54,8 @@ namespace NekretnineZellAmSee.Controllers
             return Ok(_mapper.Map<ZakupacDTORead>(e));
         }
 
+        //************************************************************************************************************************
+
         [HttpPost]
         public IActionResult Post(ZakupacDTOInsertUpdate dto)
         {
@@ -71,6 +75,8 @@ namespace NekretnineZellAmSee.Controllers
                 return BadRequest(new { poruka = ex.Message });
             }
         }
+
+        //************************************************************************************************************************
 
         [HttpPut]
         [Route("{sifra:int}")]
@@ -107,6 +113,8 @@ namespace NekretnineZellAmSee.Controllers
             }
         }
 
+        //************************************************************************************************************************
+
         [HttpDelete]
         [Route("{sifra:int}")]
         [Produces("application/json")]
@@ -142,4 +150,3 @@ namespace NekretnineZellAmSee.Controllers
         }
     }
 }
-

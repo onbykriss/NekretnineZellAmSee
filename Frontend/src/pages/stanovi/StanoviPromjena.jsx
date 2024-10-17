@@ -23,7 +23,7 @@ export default function StanoviPromjena() {
     }, [idstanovi]);
 
     async function promjena(stan) {
-        const odgovor = await StanoviService.promjena(idstanovi, stan);  //šta je stan =
+        const odgovor = await StanoviService.promjena(idstanovi, stan); 
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
@@ -54,7 +54,8 @@ export default function StanoviPromjena() {
                     <Form.Control 
                     type="number" min={10} max={5000} 
                     name="kvadratura" 
-                    required defaultValue={stan.kvadratura}/>
+                    required 
+                    defaultValue={stan.kvadratura}/>
                 </Form.Group>
 
                 <Form.Group controlId="adresa">
@@ -62,7 +63,8 @@ export default function StanoviPromjena() {
                     <Form.Control 
                     type="text" 
                     name="adresa" 
-                    required defaultValue={stan.adresa}/>
+                    required 
+                    defaultValue={stan.adresa}/>
                 </Form.Group>
 
                 <Form.Group controlId="oprema">
@@ -70,7 +72,8 @@ export default function StanoviPromjena() {
                     <Form.Control 
                     type="text" 
                     name="oprema" 
-                    required defaultValue={stan.oprema}/>
+                    required 
+                    defaultValue={stan.oprema}/>
                 </Form.Group>
 
                 <Form.Group controlId="slika">
@@ -78,9 +81,9 @@ export default function StanoviPromjena() {
                     <Form.Control 
                     type="text" 
                     name="slika" 
+                    
                     defaultValue={stan.slika}/>
                 </Form.Group>
-
                 <hr />
                 <Row className="akcije">
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
