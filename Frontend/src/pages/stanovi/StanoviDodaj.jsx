@@ -68,11 +68,12 @@ export default function StanoviDodaj() {
                         name="slika"
                     />
                 </Form.Group>
-
+                <hr />
                 <Row className="akcije">
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>
-                        <Link to={RouteNames.STANOVI_PREGLED} className="btn btn-danger">
-                            Odustani
+                        <Link to={RouteNames.STANOVI_PREGLED} 
+                              className="btn btn-danger">
+                              Odustani
                         </Link>
                     </Col>
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>

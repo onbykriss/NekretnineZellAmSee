@@ -43,7 +43,9 @@ export default function ZakupciPregled(){
     }
     return(
         <>
-            <Link to={RouteNames.ZAKUPCI_NOVI}>Dodaj novog zakupca</Link>
+            <Link to={RouteNames.ZAKUPCI_NOVI} className="btn btn-success siroko">
+            Dodaj novog zakupca
+            </Link>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>

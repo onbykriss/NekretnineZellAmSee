@@ -62,17 +62,17 @@ export default function ZakupciDodaj(){
                 </Form.Group>
              
                 <hr />
-                <Row>
+                <Row className="akcije">
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
-                    <Link to={RouteNames.ZAKUPCI_PREGLED}
-                    className="btn btn-danger siroko">
-                    Odustani
-                    </Link>
+                       <Link to={RouteNames.ZAKUPCI_PREGLED}
+                         className="btn btn-danger siroko">
+                         Odustani
+                       </Link>
                     </Col>
                     <Col xs={6} sm={6} md={9} lg={6} xl={6} xxl={6}>
-                    <Button variant="primary" type="submit" className="siroko">
-                        Dodaj novog zakupca
-                    </Button>
+                        <Button variant="success" type="submit" className="siroko">
+                          Dodaj novog zakupca
+                       </Button>
                     </Col>
                 </Row>
             </Form>
