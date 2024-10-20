@@ -18,7 +18,7 @@ export default function StanoviPromjena() {
             return;
         }
         setStan(odgovor.poruka);
-        crossOriginIsolated.log('Dohvačanje osoba:', odgovor.poruka);
+        console.log('Dohvačanje osoba:', odgovor.poruka);
     }
 
     useEffect(() => {
