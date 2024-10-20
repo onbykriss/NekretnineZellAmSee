@@ -4,9 +4,13 @@
 
 
      int? Idzakupci,
+
      string? Ime,
+
      string? Prezime,
+
      string? Email,
+
      string? Telefon
 
     );

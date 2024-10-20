@@ -74,13 +74,13 @@ export default function NajmoviPregled() {
                                 <td>{new Date(najam.datumZavrsetka).toLocaleDateString()}</td>
                                 <td>{najam.stanAdresaNaziv}</td>
                                 <td>{najam.zakupacImePrezime}</td>
-                                <td>{najam.cijena?.toFixed(2)?.replace('.', ',')} €</td>
+                                <td>{najam.cijenaNajma}</td>
                                 <td>
-                                    <Button variant="danger" onClick={() => obrisi(najam.idnajam)}>
+                                    <Button variant="danger" onClick={() => obrisi(najam.idnajmovi)}>
                                         Obriši
                                     </Button>
                                     &nbsp;&nbsp;&nbsp;
-                                    <Button variant="primary" onClick={() => navigate(`/najmovi/promjena/${najam.idnajam}`)}>
+                                    <Button variant="primary" onClick={() => navigate(`/najmovi/promjena/${najam.idnajmovi}`)}>
                                         Promjena
                                     </Button>
                                 </td>

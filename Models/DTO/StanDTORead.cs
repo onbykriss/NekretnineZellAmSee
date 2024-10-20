@@ -4,9 +4,13 @@
 
 
          int Idstanovi,
+
          int? Kvadratura,
+
          string? Adresa,
+
          string? Oprema,
+
          string? Slika
          );
 

@@ -5,25 +5,29 @@ import StanoviService from "../../services/StanoviService";
 import { useEffect, useState } from "react";
 
 export default function StanoviPromjena() {
-    const navigate = useNavigate();
-    const {idstanovi} = useParams();
     const [stan, setStan] = useState({});
+    const navigate = useNavigate();
+    const routeParams = useParams();
+   
 
     async function dohvatiStan() {
-        const odgovor = await StanoviService.getBySifra(idstanovi);
+        console.log('Dohvačanje stana s šifrom:', routeParams.idstanovi);
+        const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
         setStan(odgovor.poruka);
+        crossOriginIsolated.log('Dohvačanje osoba:', odgovor.poruka);
     }
 
     useEffect(() => {
         dohvatiStan();
-    }, [idstanovi]);
+    }, []);
 
     async function promjena(stan) {
-        const odgovor = await StanoviService.promjena(idstanovi, stan); 
+        console.log('Promjena stana:', stan);
+        const odgovor = await StanoviService.promjena(routeParams.idstanovi, stan); 
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
@@ -31,17 +35,19 @@ export default function StanoviPromjena() {
         navigate(RouteNames.STANOVI_PREGLED);
     }
 
-    function obradiSubmit(e) {
-        e.preventDefault();
-
-        const podaci = new FormData(e.target);
-
-        promjena({
-            kvadratura: parseFloat(podaci.get('kvadratura')),
-            adresa: podaci.get('adresa'),
-            oprema: podaci.get('oprema'),
-            slika: podaci.get('slika')
-        });
+    function obradiSubmit(e) 
+    {
+      e.preventDefault();
+      let podaci = new FormData(e.target);
+      let stanZaPromjenu = 
+        {
+         kvadratura: parseFloat(podaci.get('kvadratura')),
+         adresa: podaci.get('adresa'),
+         oprema: podaci.get('oprema'),
+         slika: podaci.get('slika')
+        };
+            console.log('Podaci za promjenu:', stanZaPromjenu); // Dodano za dijagnostiku
+            promjena(stanZaPromjenu);        
     }
 
     return (

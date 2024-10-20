@@ -16,6 +16,7 @@ async function get(){
     })
 }
 
+//***BRISANJE*********************************************************************************************************
 async function brisanje(sifra){
     return await HttpService.delete('/Najam/' + sifra)
     .then(()=>{
@@ -26,7 +27,7 @@ async function brisanje(sifra){
     })
 }
 
-
+//****DODAJ********************************************************************************************************
 async function dodaj(najam) {
     console.log('Dodavanje novog najma:', najam); // Log the payload
     
@@ -41,10 +42,19 @@ async function dodaj(najam) {
         }
     } catch (error) {
         console.error('Greška kod dodavanja najma:', error);
-        return { greska: true, poruka: 'Problem kod dohvaćanja najmova.' };
+        
+        // Check if the error is due to a 400 Bad Request
+        if (error.response && error.response.status === 400) {
+            const errorMessage = error.response.data ? error.response.data.message : 'Nepoznata greška';
+            return { greska: true, poruka: 'Problem kod dohvaćanja najmova.' };
+        }
+
+        // If it's not a 400 error, log the full error details
+        console.error('Full error details:', error);
+        return { greska: true, poruka: 'Problem kod dodavanja najma.' };
     }
 }
-
+//****PROMJENA********************************************************************************************************
 async function promjena(sifra,najam){
     return await HttpService.put('/Najam/' + sifra,najam)
     .then(()=>{
@@ -55,6 +65,7 @@ async function promjena(sifra,najam){
     })
 }
 
+//**GETBYSIFRA**********************************************************************************************************
 async function getBySifra(sifra){
     return await HttpService.get('/Najam/'+sifra)
     .then((odgovor)=>{

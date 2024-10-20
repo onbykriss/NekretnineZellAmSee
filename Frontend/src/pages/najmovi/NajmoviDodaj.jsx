@@ -2,13 +2,14 @@ import NajmoviService from "../../services/NajmoviService";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
+import { TbDecimal } from "react-icons/tb";
 
 export default function NajmoviDodaj() {
     
     const navigate = useNavigate();
 
     async function Dodaj(najam) {
-  
+     
 
 
         const odgovor = await NajmoviService.dodaj(najam)
@@ -23,10 +24,11 @@ export default function NajmoviDodaj() {
         e.preventDefault();
         let podaci = new FormData(e.target)
         Dodaj({
-            datum: podaci.get('datum'),
-            trajanje: parseInt(podaci.get('trajanje')),
-            stanovi_idstanovi: parseInt(podaci.get('stanovi_idstanovi')),
-            zakupci_Idzakupci: parseInt(podaci.get('zakupci_Idzakupci'))
+            idstanovi: parseInt(podaci.get('idstanovi')),
+            idzakupci: parseInt(podaci.get('idzakupci')),
+            datumPocetka: podaci.get('datumPocetka'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
         })
     }
 
@@ -34,43 +36,51 @@ export default function NajmoviDodaj() {
         <>
             Dodavanje Najmova
             <Form onSubmit={obradiSubmit}>
-                <Form.Group controlId="datum">
-                    <Form.Label>datum</Form.Label>
-                    <Form.Control
-                        type="date"
-                        name="datum"
-                        required
-                    />
-                </Form.Group>
 
-                <Form.Group controlId="trajanje">
-                    <Form.Label>trajanje</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="trajanje"
-                        required
-                    />
-                </Form.Group>
-
-                <Form.Group controlId="stanovi_idstanovi">
+            <Form.Group controlId="idstanovi">
                     <Form.Label>stanovi_idstanovi</Form.Label>
                     <Form.Control
                         type="number"
-                        name="stanovi_idstanovi"
+                        name="idstanovi"
                         required
                     />
                 </Form.Group>
 
-                <Form.Group controlId="zakupci_Idzakupci">
+                <Form.Group controlId="idzakupci">
                     <Form.Label>zakupci_Idzakupci</Form.Label>
                     <Form.Control
                         type="number"
-                        name="zakupci_Idzakupci"
+                        name="idzakupci"
                         required
                     />
                 </Form.Group>
 
+                <Form.Group controlId="datumPocetka">
+                    <Form.Label>Datum početka</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="datumPocetka"
+                        required
+                    />
+                </Form.Group>
 
+                <Form.Group controlId="datumZavrsetka">
+                    <Form.Label>Datum završetka</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="datumZavrsetka"
+                        required
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="cijenaNajma">
+                    <Form.Label>Cijena najma</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="cijenaNajma"
+                        required
+                    />  
+                </Form.Group>
 
                 <Row className="akcije">
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>

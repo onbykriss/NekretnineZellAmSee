@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
 export default function StanoviDodaj() {
-
     const navigate = useNavigate();
 
     async function Dodaj(stan) {
@@ -19,7 +18,7 @@ export default function StanoviDodaj() {
         navigate(RouteNames.STANOVI_PREGLED)
     }
 
-    async function obradiSubmit(e) {
+    function obradiSubmit(e) {
         e.preventDefault();
         let podaci = new FormData(e.target)
         Dodaj({

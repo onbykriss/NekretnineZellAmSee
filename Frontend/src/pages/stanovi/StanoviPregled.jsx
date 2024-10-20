@@ -7,6 +7,7 @@ import { RouteNames } from "../../constants";
 export default function StanoviPregled() {
     const navigate = useNavigate();
     const [stanovi, setStanovi] = useState([]);
+    
     async function dohvatiStanovi() 
     {
         const odgovor = await StanoviService.get();
@@ -14,29 +15,28 @@ export default function StanoviPregled() {
             alert(odgovor.poruka);
             return;
         }
-        setStanovi(Array.isArray(odgovor.poruka) ? odgovor.poruka : []);
+        setStanovi(odgovor.poruka);
     }
 
     useEffect(() => {
         dohvatiStanovi();
-        console.log('stanovi:', stanovi);
     }, []);
 
-    function obrisi(sifra) {
+    function obrisi(idstanovi) {
+        console.log('Brisanje stanova s šifrom:', idstanovi); // Dodano za dijagnostiku
         if (!confirm('Sigurno obrisati')) {
             return;
         }
-        brisanjeStanovi(sifra);
+        brisanjeStanovi(idstanovi);
     }
 
-    async function brisanjeStanovi(sifra) {
-        console.log('Brisanje stanova s šifrom:', sifra); // Debugging log
-        const odgovor = await StanoviService.brisanje(sifra);
+    async function brisanjeStanovi(idstanovi) {
+        console.log('Poziv API-ja za brisanje s šifrom:', idstanovi); // Dodano za dijagnostiku
+        const odgovor = await StanoviService.brisanje(idstanovi);
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
-        alert('Uspješno obrisano');
         dohvatiStanovi();
     }
 
@@ -56,7 +56,7 @@ export default function StanoviPregled() {
                     </tr>
                 </thead>
                 <tbody>
-                {Array.isArray(stanovi) && stanovi.map((stan, index) => { 
+                {stanovi && stanovi.map((stan, index) => { 
                       console.log('Stan:', stan);;
                     return (
                         <tr key={index}>

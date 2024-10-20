@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { RouteNames } from "../../constants";
 import NajmoviService from "../../services/NajmoviService";
 import { useEffect, useState } from "react";
+import { TbDecimal } from "react-icons/tb";
 
 export default function NaajmoviPromjena() {
     const navigate = useNavigate();
@@ -37,10 +38,11 @@ export default function NaajmoviPromjena() {
         const podaci = new FormData(e.target);
 
         promjena({
-            datum: podaci.get('datum'),
-            trajanje: parseInt(podaci.get('trajanje')),
-            stanovi_idstanovi: parseInt(podaci.get('stanovi_idstanovi')),
-            zakupci_Idzakupci: parseInt(podaci.get('zakupci_Idzakupci'))
+            idstanovi: parseInt(podaci.get('idstanovi')),
+            idzakupci: parseInt(podaci.get('idzakupci')),
+            datumPocetka: podaci.get('datumPocetka'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
         });
     }
 
@@ -49,46 +51,49 @@ export default function NaajmoviPromjena() {
             Promjena najma
             
             <Form onSubmit={obradiSubmit}>
-                <Form.Group controlId="datum">
-                    <Form.Label>Datum</Form.Label>
+                <Form.Group controlId="datumPocetka">
+                    <Form.Label>Datum početka</Form.Label>
                     <Form.Control 
                     type="date" 
-                    name="datum" 
+                    name="datumPocetka" 
                     required 
-                    defaultValue={najam.datum}/>
+                    defaultValue={najam.datumPocetka}/>
                 </Form.Group>
 
-                <Form.Group controlId="trajanje">
-                    <Form.Label>Trajanje</Form.Label>
-                    <Form.Select 
-                        name="trajanje"
-                        required
-                        defaultValue={Math.ceil(najam.trajanje / 30)}
-                    >
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
-                            <option value={month} key={month}>
-                                {month} mjesec(a)
-                            </option>
-                        ))}
-                    </Form.Select>
+                <Form.Group controlId="datumZavrsetka">
+                    <Form.Label>Datum završetka</Form.Label>
+                    <Form.Control 
+                    type="date" 
+                    name="datumZavrsetka" 
+                    required 
+                    defaultValue={najam.datumZavrsetka}/>
                 </Form.Group>
 
-                <Form.Group controlId="stanovi_idstanovi">
+                <Form.Group controlId="cijenaNajma">
+                    <Form.Label>Cijena najma</Form.Label>
+                    <Form.Control 
+                    type="number" 
+                    name="cijenaNajma" 
+                    required 
+                    defaultValue={najam.cijenaNajma}/>
+                </Form.Group>
+                
+                <Form.Group controlId="idstanovi">
                     <Form.Label>Stan</Form.Label>
                     <Form.Control 
                     type="number" 
-                    name="stanovi_idstanovi" 
+                    name="idstanovi" 
                     required 
-                    defaultValue={najam.stanovi_idstanovi}/>
+                    defaultValue={najam.idstanovi}/>
                 </Form.Group>
 
-                <Form.Group controlId="zakupci_Idzakupci">
+                <Form.Group controlId="idzakupci">
                     <Form.Label>Zakupac</Form.Label>
                     <Form.Control 
                     type="number" 
-                    name="zakupci_Idzakupci" 
+                    name="idzakupci" 
                     required 
-                    defaultValue={najam.zakupci_Idzakupci}/>
+                    defaultValue={najam.idzakupci}/>
                 </Form.Group>
                 <hr />
                 <Row className="akcije">
