@@ -3,6 +3,8 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
+
+// **********************************************************************************************************
 export default function StanoviDodaj() {
     const navigate = useNavigate();
 
@@ -29,9 +31,11 @@ export default function StanoviDodaj() {
         })
     }
 
+// **********************************************************************************************************
     return (
         <>
             Dodavanje Stanova
+
             <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>kvadratura</Form.Label>
@@ -68,6 +72,7 @@ export default function StanoviDodaj() {
                         name="slika"
                     />
                 </Form.Group>
+                
                 <hr />
                 <Row className="akcije">
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>

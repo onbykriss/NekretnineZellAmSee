@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 import ZakupciService from "../../services/ZakupciService";
 
-
+// *********************************************************************************************************
 export default function ZakupciDodaj(){
     const navigate = useNavigate();
     async function dodaj(e){
@@ -24,6 +24,8 @@ export default function ZakupciDodaj(){
             telefon: podaci.get('telefon'),
         });
     }
+
+    // **********************************************************************************************************
     return(
         <>
             Dodavanje novog Zakupca

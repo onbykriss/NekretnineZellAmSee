@@ -1,5 +1,6 @@
 import { HttpService } from "./HttpService";
 
+//****GET********************************************************************************************************
 async function get(){
     return await HttpService.get('/Najam')  
     .then((odgovor)=>{
@@ -54,6 +55,7 @@ async function dodaj(najam) {
         return { greska: true, poruka: 'Problem kod dodavanja najma.' };
     }
 }
+
 //****PROMJENA********************************************************************************************************
 async function promjena(sifra,najam){
     return await HttpService.put('/Najam/' + sifra,najam)

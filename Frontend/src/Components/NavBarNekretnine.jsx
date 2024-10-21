@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { RouteNames } from '../constants';
 
 export default function NavBarNekretnine() {
-
    const navigate = useNavigate()
     
   return (
@@ -37,7 +36,7 @@ export default function NavBarNekretnine() {
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                    <Nav.Link href="https://kristinandric-001-site1.etempurl.com/swagger/index.html" target="_blank">Swagger</Nav.Link>
                     <NavDropdown title="Nekretnine" id="basic-nav-dropdown">
-                     <NavDropdown.Item onClick={()=>navigate(RouteNames.STANOVI_PREGLED)} >Stanovi</NavDropdown.Item>
+                     <NavDropdown.Item onClick={()=>navigate(RouteNames.STANOVI_PREGLED)}>Stanovi</NavDropdown.Item>
                      <NavDropdown.Item onClick={()=>navigate(RouteNames.ZAKUPCI_PREGLED)}>Zakupci</NavDropdown.Item>
                      <NavDropdown.Item onClick={()=>navigate(RouteNames.NAJMOVI_PREGLED)}>Najmovi</NavDropdown.Item>
                     </NavDropdown>

@@ -1,5 +1,6 @@
 import { HttpService } from "./HttpService";
 
+//****GET********************************************************************************************************
 async function get(){
     return await HttpService.get('/Stan')  //('/Stanovi') je ruta
     .then((odgovor)=>{
@@ -13,6 +14,7 @@ async function get(){
     })
 }
 
+//****BRISANJE********************************************************************************************************
 async function brisanje(sifra){
     return await HttpService.delete('/Stan/' + sifra)
     .then(()=>{
@@ -23,7 +25,7 @@ async function brisanje(sifra){
     })
 }
 
-
+//****DODAJ********************************************************************************************************
 async function dodaj(stan){
     return await HttpService.post('/Stan',stan)
     .then(()=>{
@@ -34,6 +36,7 @@ async function dodaj(stan){
     })
 }
 
+//****PROMJENA********************************************************************************************************
 async function promjena(sifra,stan){
     return await HttpService.put('/Stan/' + sifra,stan)
     .then(()=>{
@@ -44,7 +47,7 @@ async function promjena(sifra,stan){
     })
 }
 
-
+//**GETBYSIFRA**********************************************************************************************************
 async function getBySifra(sifra){
     return await HttpService.get('/Stan/'+sifra)
     .then((odgovor)=>{

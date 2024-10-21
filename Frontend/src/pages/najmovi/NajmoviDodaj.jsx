@@ -4,13 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 import { TbDecimal } from "react-icons/tb";
 
+// **********************************************************************************************************
 export default function NajmoviDodaj() {
-    
     const navigate = useNavigate();
 
     async function Dodaj(najam) {
-     
-
 
         const odgovor = await NajmoviService.dodaj(najam)
         if(odgovor.greska){
@@ -32,11 +30,12 @@ export default function NajmoviDodaj() {
         })
     }
 
+    // **********************************************************************************************************
     return (
         <>
             Dodavanje Najmova
+            
             <Form onSubmit={obradiSubmit}>
-
             <Form.Group controlId="idstanovi">
                     <Form.Label>stanovi_idstanovi</Form.Label>
                     <Form.Control

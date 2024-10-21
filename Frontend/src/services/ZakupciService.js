@@ -1,5 +1,6 @@
 import { HttpService } from "./HttpService";
 
+//****GET**********************************************************************************************************
 async function get() {
     return await HttpService.get('/Zakupac')
         .then((odgovor) => {
@@ -10,16 +11,7 @@ async function get() {
         });
 }
 
-async function getBySifra(sifra) {
-    return await HttpService.get('/Zakupac/' + sifra)
-        .then((odgovor) => {
-            return { greska: false, poruka: odgovor.data };
-        })
-        .catch(() => {
-            return { greska: true, poruka: 'Zakupac ne postoji!' };
-        });
-}
-
+//****BRISANJE**********************************************************************************************************
 async function obrisi(sifra) {
     return await HttpService.delete('/Zakupac/' + sifra)
         .then((odgovor) => {
@@ -30,6 +22,7 @@ async function obrisi(sifra) {
         });
 }
 
+//*****DODAJ*********************************************************************************************************
 async function dodaj(Zakupac) {
     return await HttpService.post('/Zakupac', Zakupac)
         .then((odgovor) => {
@@ -49,6 +42,7 @@ async function dodaj(Zakupac) {
         });
 }
 
+//******PROMJENA********************************************************************************************************
 async function promjena(sifra, Zakupac) {
     return await HttpService.put('/Zakupac/' + sifra, Zakupac)
         .then((odgovor) => {
@@ -67,6 +61,18 @@ async function promjena(sifra, Zakupac) {
             }
         });
 }
+
+//****GETBYSIFRA**********************************************************************************************************
+async function getBySifra(sifra) {
+    return await HttpService.get('/Zakupac/' + sifra)
+        .then((odgovor) => {
+            return { greska: false, poruka: odgovor.data };
+        })
+        .catch(() => {
+            return { greska: true, poruka: 'Zakupac ne postoji!' };
+        });
+}
+
 
 export default {
     get,

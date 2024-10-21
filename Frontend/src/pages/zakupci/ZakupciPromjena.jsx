@@ -4,6 +4,8 @@ import { RouteNames } from "../../constants";
 import ZakupciService from "../../services/ZakupciService";
 import { useEffect, useState } from "react";
 
+//*********************************************************************************************************
+
 export default function ZakupciPromjena(){
     const navigate = useNavigate();
     const {Idzakupci} = useParams();
@@ -22,12 +24,17 @@ export default function ZakupciPromjena(){
         dohvatiZakupce();
     }, [Idzakupci]);
 
+//*********************************************************************************************************
     async function promjena(zakupac){
+        console.log('Menjamo zakupca:', Idzakupci, zakupac);
         const odgovor = await ZakupciService.promjena(Idzakupci,zakupac);  
+        console.log('Odgovor od ZakupciService:', odgovor);
         if (odgovor.greska){
+            console.error('Greška kod promjene zakupca:', odgovor.poruka);
             alert(odgovor.poruka);
             return;
         }
+        console.log('Zakupac je uspješno promjenjen');
         navigate(RouteNames.ZAKUPCI_PREGLED);
     }
 
@@ -44,10 +51,11 @@ export default function ZakupciPromjena(){
         });
     }
     
+    //**********************************************************************************************************
+
     return(
         <>
             Promjena Zakupca
-            
             <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="ime">
                     <Form.Label>Ime</Form.Label>

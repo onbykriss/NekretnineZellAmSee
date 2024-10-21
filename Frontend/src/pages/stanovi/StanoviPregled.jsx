@@ -4,6 +4,8 @@ import { Button, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
+// ****************************************************************************************************************************************************
+
 export default function StanoviPregled() {
     const navigate = useNavigate();
     const [stanovi, setStanovi] = useState([]);
@@ -22,6 +24,8 @@ export default function StanoviPregled() {
         dohvatiStanovi();
     }, []);
 
+// ****************************************************************************************************************************************************
+
     function obrisi(idstanovi) {
         console.log('Brisanje stanova s šifrom:', idstanovi); // Dodano za dijagnostiku
         if (!confirm('Sigurno obrisati')) {
@@ -39,6 +43,8 @@ export default function StanoviPregled() {
         }
         dohvatiStanovi();
     }
+
+// ****************************************************************************************************************************************************
 
     return (
         <>

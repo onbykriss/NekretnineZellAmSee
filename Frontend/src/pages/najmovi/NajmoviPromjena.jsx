@@ -5,7 +5,9 @@ import NajmoviService from "../../services/NajmoviService";
 import { useEffect, useState } from "react";
 import { TbDecimal } from "react-icons/tb";
 
-export default function NaajmoviPromjena() {
+// *********************************************************************************************************
+
+export default function NajmoviPromjena() {
     const navigate = useNavigate();
     const {idnajmovi} = useParams();
     const [najam, setNajam] = useState({});
@@ -22,6 +24,8 @@ export default function NaajmoviPromjena() {
     useEffect(() => {
         dohvatiNajam();
     }, [idnajmovi]);
+
+// *********************************************************************************************************
 
     async function promjena(najam) {
         const odgovor = await NajmoviService.promjena(idnajmovi, najam);
@@ -45,6 +49,8 @@ export default function NaajmoviPromjena() {
             cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
         });
     }
+
+// *********************************************************************************************************
 
     return (
         <>

@@ -4,6 +4,8 @@ import { Button, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 
+//**************************************************************************************************************************************************
+
 export default function NajmoviPregled() {
     console.log('Component rendering'); // Debugging log
     
@@ -30,6 +32,8 @@ export default function NajmoviPregled() {
         dohvatiNajmove();
     }, []);
 
+    //**************************************************************************************************************************************************
+
     function obrisi(sifra) {
         if (!confirm('Sigurno obrisati')) {
             return;
@@ -47,6 +51,8 @@ export default function NajmoviPregled() {
         alert('Uspješno obrisano');
         dohvatiNajmove();
     }
+
+//**************************************************************************************************************************************************
 
     return (
         <>
@@ -90,7 +96,7 @@ export default function NajmoviPregled() {
                     </tbody>
                 </Table>
             ) : (
-                <p>No rentals available.</p>
+                <p>Nema slobodnih najmova.</p>
             )}
         </>
     );

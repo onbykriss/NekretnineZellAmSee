@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { RouteNames } from "../../constants";
 import { Link, useNavigate } from "react-router-dom";
 
+//**************************************************************************************************************************************************
+
 export default function ZakupciPregled(){
     const [zakupci,setZakupci] = useState([]);
     const navigate = useNavigate();
     async function dohvatiZakupce(params) 
     {
-        
-     
         // zaustavi kod u Chrome consoli i tamo se može raditi debug
         //debugger;
         
@@ -26,9 +26,11 @@ export default function ZakupciPregled(){
     // 28:7  warning  React Hook useEffect has a missing dependency: 'dohvatie'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
     useEffect(() => {
         dohvatiZakupce();
-        console.log('zakupci:', zakupci); // Add this line to log the contents of zakupci
+        console.log('zakupci:', zakupci); // Add this line to log the contents of zakupci 
       }, []);
    
+// ****************************************************************************************************************************************************
+
     async function obrisiAsync(sifra) {
         const odgovor = await ZakupciService.obrisi(sifra);
         //console.log(odgovor);
@@ -41,6 +43,9 @@ export default function ZakupciPregled(){
     function obrisi(sifra){
         obrisiAsync(sifra);
     }
+
+// ****************************************************************************************************************************************************
+
     return(
         <>
             <Link to={RouteNames.ZAKUPCI_NOVI} className="btn btn-success siroko">

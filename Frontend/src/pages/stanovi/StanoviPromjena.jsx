@@ -4,12 +4,13 @@ import { RouteNames } from "../../constants";
 import StanoviService from "../../services/StanoviService";
 import { useEffect, useState } from "react";
 
+// *********************************************************************************************************
+
 export default function StanoviPromjena() {
     const [stan, setStan] = useState({});
     const navigate = useNavigate();
     const routeParams = useParams();
    
-
     async function dohvatiStan() {
         console.log('Dohvačanje stana s šifrom:', routeParams.idstanovi);
         const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
@@ -24,6 +25,8 @@ export default function StanoviPromjena() {
     useEffect(() => {
         dohvatiStan();
     }, []);
+
+// *********************************************************************************************************
 
     async function promjena(stan) {
         console.log('Promjena stana:', stan);
@@ -49,6 +52,8 @@ export default function StanoviPromjena() {
             console.log('Podaci za promjenu:', stanZaPromjenu); // Dodano za dijagnostiku
             promjena(stanZaPromjenu);        
     }
+
+// *********************************************************************************************************
 
     return (
         <>
