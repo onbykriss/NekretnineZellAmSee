@@ -10,7 +10,7 @@ namespace NekretnineZellAmSee.Controllers
     [Route("api/v1/[controller]")]
     public class ZakupacController(NekretnineZellAmSeeContext context, IMapper mapper) : NekretnineZellAmSeeController(context, mapper)
     {
-        // RUTE
+        // RUTE*************************************************************************************************************
         [HttpGet]
         public ActionResult<List<ZakupacDTORead>> Get()
         {

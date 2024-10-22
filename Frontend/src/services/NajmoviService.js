@@ -31,7 +31,7 @@ async function brisanje(sifra){
 //****DODAJ********************************************************************************************************
 async function dodaj(najam) {
     console.log('Dodavanje novog najma:', najam); // Log the payload
-    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), 10000)); // 10 seconds timeout
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), 50000)); // 50 seconds timeout
     try {
         const response = await HttpService.post('/Najam', najam);
         console.log('Odgovor servera:', response); // Log the full response

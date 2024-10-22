@@ -5,50 +5,61 @@ import ZakupciService from "../../services/ZakupciService";
 import { useEffect, useState } from "react";
 
 //*********************************************************************************************************
-
 export default function ZakupciPromjena(){
     const navigate = useNavigate();
-    const {Idzakupci} = useParams();
+    const routeParams = useParams();
     const [zakupac,setZakupac] = useState({});
+    
+    console.log('Route params:', routeParams);
 
-    async function dohvatiZakupce(){
-        const odgovor = await ZakupciService.getBySifra(Idzakupci);
-        if (odgovor.greska){
-            alert(odgovor.poruka);
+    async function dohvatiZakupca(){
+        console.log('Dohvaćanje zakupca s šifrom:', routeParams.Idzakupci);
+        if (!routeParams.idzakupci){
+            console.error('Idzakupci parameter is undefined');
+            alert('Nije dodeljen ID zakupca');
             return;
         }
-        setZakupac(odgovor.poruka);
+        try{
+            const odgovor = await ZakupciService.getBySifra(routeParams.idzakupci);
+            if (odgovor.greska){
+                console.error("Error dohvačanja zakupca", odgovor.poruka);
+                alert(odgovor.poruka);
+                return;
+            }
+            setZakupac(odgovor.poruka);
+            console.log('Dohvaćanje zakupca:', odgovor.poruka);
+        }
+        catch (error){
+            console.error("Error dohvačanja zakupca", error);
+            alert('Problem kod dohvaćanja zakupca');
+        }
     }
 
     useEffect(()=>{
-        dohvatiZakupce();
-    }, [Idzakupci]);
+        dohvatiZakupca();
+    }, []);
 
 //*********************************************************************************************************
     async function promjena(zakupac){
-        console.log('Menjamo zakupca:', Idzakupci, zakupac);
-        const odgovor = await ZakupciService.promjena(Idzakupci,zakupac);  
-        console.log('Odgovor od ZakupciService:', odgovor);
+        const odgovor = await ZakupciService.promjena(routeParams.idzakupci, zakupac);  
         if (odgovor.greska){
-            console.error('Greška kod promjene zakupca:', odgovor.poruka);
             alert(odgovor.poruka);
             return;
         }
-        console.log('Zakupac je uspješno promjenjen');
         navigate(RouteNames.ZAKUPCI_PREGLED);
     }
 
-    function obradiSubmit(e) { 
+    function obradiSubmit(e) 
+    { 
         e.preventDefault();
-
         const podaci = new FormData(e.target);
-
         promjena({
             ime: podaci.get('ime'),
             prezime: podaci.get('prezime'),
             email: podaci.get('email'),
-            telefon: podaci.get('telefon'),
+            telefon: podaci.get('telefon')
         });
+       
     }
     
     //**********************************************************************************************************
@@ -56,6 +67,7 @@ export default function ZakupciPromjena(){
     return(
         <>
             Promjena Zakupca
+
             <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="ime">
                     <Form.Label>Ime</Form.Label>

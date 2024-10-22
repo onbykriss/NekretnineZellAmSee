@@ -5,7 +5,6 @@ import StanoviService from "../../services/StanoviService";
 import { useEffect, useState } from "react";
 
 // *********************************************************************************************************
-
 export default function StanoviPromjena() {
     const [stan, setStan] = useState({});
     const navigate = useNavigate();
@@ -27,7 +26,6 @@ export default function StanoviPromjena() {
     }, []);
 
 // *********************************************************************************************************
-
     async function promjena(stan) {
         console.log('Promjena stana:', stan);
         const odgovor = await StanoviService.promjena(routeParams.idstanovi, stan); 

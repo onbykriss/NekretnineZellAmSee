@@ -9,39 +9,46 @@ import { Link, useNavigate } from "react-router-dom";
 export default function ZakupciPregled(){
     const [zakupci,setZakupci] = useState([]);
     const navigate = useNavigate();
-    async function dohvatiZakupce(params) 
+
+    async function dohvatiZakupci() 
     {
         // zaustavi kod u Chrome consoli i tamo se može raditi debug
         //debugger;
-        
+        const odgovor = await ZakupciService.get();
         await ZakupciService.get()
-        .then((odgovor)=>{
-            //console.log(odgovor);
-            setZakupci(odgovor);
-        })
-        .catch((e)=>{console.log(e)});
+        if (odgovor.greska) {
+            alert(odgovor.poruka);
+            return;
+        }
+        setZakupci(odgovor.poruka);
     }
     // npm run lint
     // javlja upozorenje
     // 28:7  warning  React Hook useEffect has a missing dependency: 'dohvatie'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
     useEffect(() => {
-        dohvatiZakupce();
-        console.log('zakupci:', zakupci); // Add this line to log the contents of zakupci 
+        dohvatiZakupci();
+        
       }, []);
    
 // ****************************************************************************************************************************************************
 
-    async function obrisiAsync(sifra) {
-        const odgovor = await ZakupciService.obrisi(sifra);
+    async function obrisi(idzakupci) {
+        console.log('Brisanje zakupaca s šifrom:', idzakupci); // Dodano za dijagnostiku
         //console.log(odgovor);
-        if(odgovor.greska){
+        if(!confirm('Sigurno obrisati')){
+            return;
+        }
+        dohvatiZakupci(idzakupci);
+    }
+
+    async function brisanjeStanovi(idzakupci){
+        console.log('Poziv API-ja za brisanje s šifrom:', idzakupci); // Dodano za dijagnostiku
+        const odgovor = await ZakupciService.brisanje(idzakupci);
+        if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
-        dohvatiZakupce();
-    }
-    function obrisi(sifra){
-        obrisiAsync(sifra);
+        dohvatiZakupci();
     }
 
 // ****************************************************************************************************************************************************

@@ -1,15 +1,14 @@
 import { HttpService } from "./HttpService";
 
 //****GET********************************************************************************************************
-async function get(){
+async function get() {
     return await HttpService.get('/Stan')  //('/Stanovi') je ruta
     .then((odgovor)=>{
-        //console.log(odgovor.data)
-        //console.table(odgovor.data)
+        
         return {greska: false, poruka: odgovor.data}
     })
     .catch((e)=>{
-        //console.log(e)
+        
         return {greska: true, poruka: 'Problem kod dohvaćanja stanova'}   
     })
 }
@@ -27,7 +26,7 @@ async function brisanje(sifra){
 
 //****DODAJ********************************************************************************************************
 async function dodaj(stan){
-    return await HttpService.post('/Stan',stan)
+    return await HttpService.post('/Stan', stan)
     .then(()=>{
         return {greska: false, poruka: 'Dodano'}
     })
@@ -37,8 +36,8 @@ async function dodaj(stan){
 }
 
 //****PROMJENA********************************************************************************************************
-async function promjena(sifra,stan){
-    return await HttpService.put('/Stan/' + sifra,stan)
+async function promjena(sifra, stan){
+    return await HttpService.put('/Stan/' + sifra, stan)
     .then(()=>{
         return {greska: false, poruka: 'Dodano'}
     })
@@ -49,12 +48,12 @@ async function promjena(sifra,stan){
 
 //**GETBYSIFRA**********************************************************************************************************
 async function getBySifra(sifra){
-    return await HttpService.get('/Stan/'+sifra)
+    return await HttpService.get('/Stan/'+ sifra)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
     .catch((e)=>{
-        return {greska: true, poruka: 'Problem kod dohvaćanja stana s šifrom '+sifra}   
+        return {greska: true, poruka: 'Problem kod dohvaćanja stana s šifrom '+ sifra}   
     })
 }
 
