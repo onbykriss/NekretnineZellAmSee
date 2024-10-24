@@ -15,6 +15,7 @@ async function get() {
 
 //****BRISANJE********************************************************************************************************
 async function brisanje(sifra){
+
     return await HttpService.delete('/Stan/' + sifra)
     .then(()=>{
         return {greska: false, poruka: 'Obrisano'}

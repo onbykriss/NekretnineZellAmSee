@@ -22,8 +22,8 @@ export default function StanoviPromjena() {
     const [slikaZaServer, setSlikaZaServer] = useState('');
     const cropperRef = useRef(null);
   
-   
-    async function dohvatiStan() {
+   //*************************************************************************************************************
+       async function dohvatiStan() {
         showLoading();
         const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
         hideLoading();
@@ -39,7 +39,7 @@ export default function StanoviPromjena() {
             setTrenutnaSlika(nepoznato);
         }
     }
-
+    //*********************************************************************************************************
     useEffect(() => {
         dohvatiStan();
     }, []);
@@ -47,7 +47,7 @@ export default function StanoviPromjena() {
 // *********************************************************************************************************
     async function promjena(stan) {
         showLoading();
-        const odgovor = await StanoviService.promjena(routeParams.idstanovi, stan); 
+        const odgovor = await StanoviService.promjena(routeParams.idstanovi, e); 
         hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
@@ -56,23 +56,24 @@ export default function StanoviPromjena() {
         navigate(RouteNames.STANOVI_PREGLED);
     }
 
-    function obradiSubmit(e) 
-    {
+    // *********************************************************************************************************
+    function obradiSubmit(e) {
       e.preventDefault();
-      let podaci = new FormData(e.target);
-      let stanZaPromjenu = 
-        {
+      const podaci = new FormData(e.target);
+        promjena ({
          kvadratura: parseFloat(podaci.get('kvadratura')),
          adresa: podaci.get('adresa'),
          oprema: podaci.get('oprema'),
          slika: podaci.get('slika')
-        };
-            promjena(stanZaPromjenu);        
+        });        
     }
 
+    // *********************************************************************************************************
     function onCrop() {
         setSlikaZaServer(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
       }
+
+    //*********************************************************************************************************
       function onChangeImage(e) {
         e.preventDefault();
     
@@ -92,7 +93,7 @@ export default function StanoviPromjena() {
           console.error(error);
         }
       }
-    
+    //*********************************************************************************************************
       async function spremiSliku() {
         showLoading();
         const base64 = slikaZaServer;
@@ -111,7 +112,6 @@ export default function StanoviPromjena() {
             Promjena stana
           <Row>
             <Col key='1' sm={12} lg={6} md={6}>
-
               <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>Kvadratura</Form.Label>
@@ -148,8 +148,31 @@ export default function StanoviPromjena() {
                     defaultValue={stan.slika}/>
                 </Form.Group>
                 <hr />
-                
-                <Row className="akcije">
+
+                <Row className='mb-4'>
+              <Col key='1' sm={12} lg={6} md={12}>
+                <p className='form-label'>Trenutna slika</p>
+                <Image
+                  //za lokalni development
+                  //src={'https://edunovawp1.eu/' + trenutnaSlika}
+                  src={trenutnaSlika}
+                  className='slika'
+                />
+              </Col>
+              <Col key='2' sm={12} lg={6} md={12}>
+                {slikaZaServer && (
+                  <>
+                    <p className='form-label'>Nova slika</p>
+                    <Image
+                      src={slikaZaServer || slikaZaCrop}
+                      className='slika'
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+                <hr />
+                <Row>
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
                         <Link to={RouteNames.STANOVI_PREGLED}
                             className="btn btn-danger siroko">
@@ -172,7 +195,7 @@ export default function StanoviPromjena() {
                     </Col>
                     <Col xs={6} sm={6} md={9} lg={6} xl={6} xxl={6}>
                     <Button variant="primary" type="submit" className="siroko">
-                        Promjeni polaznika
+                        Promjeni stan
                     </Button>
                     </Col>
                 </Row>

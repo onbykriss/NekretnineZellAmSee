@@ -14,15 +14,24 @@ import ZakupciPromjena from './pages/zakupci/ZakupciPromjena';
 import NajmoviPregled from './pages/najmovi/NajmoviPregled';
 import NajmoviDodaj from './pages/najmovi/NajmoviDodaj';
 import NajmoviPromjena from './pages/najmovi/NajmoviPromjena';
-import LoadingSpinner from './components/LoadingSpinner'
+import LoadingSpinner from './Components/LoadingSpinner'
 
 
 function App() {
 
+  function godina(){
+    const pocenta = 2024;
+    const trenutna = new Date().getFullYear();
+    if(pocenta===trenutna){
+      return trenutna;
+    }
+    return pocenta + ' - ' + trenutna;
+  }
+
   return (
     <>
     <LoadingSpinner />
-    <Container>
+    <Container className='aplikacija'>
       <NavBarNekretnine />
       <Routes>
         <Route path={RouteNames.HOME} element={<Pocetna/>} />
