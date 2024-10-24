@@ -3,10 +3,12 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 import { TbDecimal } from "react-icons/tb";
+import useLoading from "../../hooks/useLoading";
 
 // **********************************************************************************************************
 export default function NajmoviDodaj() {
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
 
     async function Dodaj(najam) {
 
@@ -19,8 +21,10 @@ export default function NajmoviDodaj() {
     }
 
     async function obradiSubmit(e) {
+        showLoading();
         e.preventDefault();
         let podaci = new FormData(e.target)
+        hideLoading();
         Dodaj({
             idstanovi: parseInt(podaci.get('idstanovi')),
             idzakupci: parseInt(podaci.get('idzakupci')),

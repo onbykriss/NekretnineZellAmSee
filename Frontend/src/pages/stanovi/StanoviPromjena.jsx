@@ -1,24 +1,43 @@
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { RouteNames } from "../../constants";
+import { APP_URL, RouteNames } from "../../constants";
 import StanoviService from "../../services/StanoviService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import useLoading from "../../hooks/useLoading";
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+import nepoznato from '../../novo/nepoznato.png';
+
 
 // *********************************************************************************************************
 export default function StanoviPromjena() {
+
+    const { showLoading, hideLoading } = useLoading();
     const [stan, setStan] = useState({});
     const navigate = useNavigate();
     const routeParams = useParams();
+
+    const [trenutnaSlika, setTrenutnaSlika] = useState('');
+    const [slikaZaCrop, setSlikaZaCrop] = useState('');
+    const [slikaZaServer, setSlikaZaServer] = useState('');
+    const cropperRef = useRef(null);
+  
    
     async function dohvatiStan() {
-        console.log('Dohvačanje stana s šifrom:', routeParams.idstanovi);
+        showLoading();
         const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
+        hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
         setStan(odgovor.poruka);
-        console.log('Dohvačanje osoba:', odgovor.poruka);
+
+        if(odgovor.poruka.slika!=null){
+            setTrenutnaSlika(APP_URL + odgovor.poruka.slika + `?${Date.now()}`); // ovaj Date je da uvijek dovuče zadnju sliku
+        }else{
+            setTrenutnaSlika(nepoznato);
+        }
     }
 
     useEffect(() => {
@@ -27,8 +46,9 @@ export default function StanoviPromjena() {
 
 // *********************************************************************************************************
     async function promjena(stan) {
-        console.log('Promjena stana:', stan);
+        showLoading();
         const odgovor = await StanoviService.promjena(routeParams.idstanovi, stan); 
+        hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
@@ -47,17 +67,52 @@ export default function StanoviPromjena() {
          oprema: podaci.get('oprema'),
          slika: podaci.get('slika')
         };
-            console.log('Podaci za promjenu:', stanZaPromjenu); // Dodano za dijagnostiku
             promjena(stanZaPromjenu);        
     }
+
+    function onCrop() {
+        setSlikaZaServer(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
+      }
+      function onChangeImage(e) {
+        e.preventDefault();
+    
+        let files;
+        if (e.dataTransfer) {
+          files = e.dataTransfer.files;
+        } else if (e.target) {
+          files = e.target.files;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          setSlikaZaCrop(reader.result);
+        };
+        try {
+          reader.readAsDataURL(files[0]);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    
+      async function spremiSliku() {
+        showLoading();
+        const base64 = slikaZaServer;
+        const odgovor = await PolaznikService.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
+        hideLoading();
+        if(odgovor.greska){
+          alert(odgovor.podaci);
+        }
+        setTrenutnaSlika(slikaZaServer);
+      }   
 
 // *********************************************************************************************************
 
     return (
         <>
             Promjena stana
-            
-            <Form onSubmit={obradiSubmit}>
+          <Row>
+            <Col key='1' sm={12} lg={6} md={6}>
+
+              <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>Kvadratura</Form.Label>
                     <Form.Control 
@@ -90,10 +145,10 @@ export default function StanoviPromjena() {
                     <Form.Control 
                     type="text" 
                     name="slika" 
-                    
                     defaultValue={stan.slika}/>
                 </Form.Group>
                 <hr />
+                
                 <Row className="akcije">
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
                         <Link to={RouteNames.STANOVI_PREGLED}
@@ -107,7 +162,48 @@ export default function StanoviPromjena() {
                         </Button>
                     </Col>
                 </Row>
-            </Form>
-        </>
+                <hr />
+                <Row>
+                    <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
+                    <Link to={RouteNames.POLAZNIK_PREGLED}
+                    className="btn btn-danger siroko">
+                    Odustani
+                    </Link>
+                    </Col>
+                    <Col xs={6} sm={6} md={9} lg={6} xl={6} xxl={6}>
+                    <Button variant="primary" type="submit" className="siroko">
+                        Promjeni polaznika
+                    </Button>
+                    </Col>
+                </Row>
+            </Form> 
+            </Col>
+        <Col key='2' sm={12} lg={6} md={6}>
+        <input className='mb-3' type='file' onChange={onChangeImage} />
+              <Button disabled={!slikaZaServer} onClick={spremiSliku}>
+                Spremi sliku
+              </Button>
+
+              <Cropper
+                src={slikaZaCrop}
+                style={{ height: 400, width: '100%' }}
+                initialAspectRatio={1}
+                guides={true}
+                viewMode={1}
+                minCropBoxWidth={50}
+                minCropBoxHeight={50}
+                cropBoxResizable={false}
+                background={false}
+                responsive={true}
+                checkOrientation={false}
+                cropstart={onCrop}
+                cropend={onCrop}
+                ref={cropperRef}
+              />
+        </Col>
+      </Row>
+
+            
+    </>
     )
 }

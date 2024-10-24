@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NekretnineZellAmSee.Data;
 using NekretnineZellAmSee.Models;
 using NekretnineZellAmSee.Models.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace NekretnineZellAmSee.Controllers
 {
@@ -148,5 +149,31 @@ namespace NekretnineZellAmSee.Controllers
                 return BadRequest(new { poruka = ex.Message });
             }
         }
+
+        //************************************************************************************************************************
+
+        [HttpGet]
+        [Route("traziStranicenje/{stranica}")]
+        public IActionResult TraziZakupacStranicenje(int stranica, string uvjet = "")
+        {
+            var poStranici = 8;
+            uvjet = uvjet.ToLower();
+            try
+            {
+                var zakupci = _context.Zakupci
+                    .Where(p => EF.Functions.Like(p.Ime.ToLower(), "%" + uvjet + "%")
+                                || EF.Functions.Like(p.Prezime.ToLower(), "%" + uvjet + "%"))
+                    .Skip((poStranici * stranica) - poStranici)
+                    .Take(poStranici)
+                    .OrderBy(p => p.Prezime)
+                    .ToList();
+                return Ok(_mapper.Map<List<ZakupacDTORead>>(zakupci));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

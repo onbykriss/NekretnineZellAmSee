@@ -15,4 +15,6 @@ export const RouteNames = {
     NAJMOVI_PROMJENA: '/Najmovi/:idnajmovi'
     
 }
-export const BACKEND_URL = 'https://kristinandric-001-site1.etempurl.com/api/v1';
+export const APP_URL = 'https://kristinandric-001-site1.etempurl.com';
+
+export const BACKEND_URL = APP_URL + '/api/v1';

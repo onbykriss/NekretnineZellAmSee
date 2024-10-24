@@ -14,12 +14,14 @@ import ZakupciPromjena from './pages/zakupci/ZakupciPromjena';
 import NajmoviPregled from './pages/najmovi/NajmoviPregled';
 import NajmoviDodaj from './pages/najmovi/NajmoviDodaj';
 import NajmoviPromjena from './pages/najmovi/NajmoviPromjena';
+import LoadingSpinner from './components/LoadingSpinner'
 
 
 function App() {
 
   return (
     <>
+    <LoadingSpinner />
     <Container>
       <NavBarNekretnine />
       <Routes>

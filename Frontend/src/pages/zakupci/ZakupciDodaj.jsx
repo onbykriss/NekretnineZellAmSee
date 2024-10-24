@@ -2,12 +2,17 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
 import ZakupciService from "../../services/ZakupciService";
+import useLoading from "../../hooks/useLoading";
 
 // *********************************************************************************************************
 export default function ZakupciDodaj(){
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
+
     async function dodaj(e){
+        showLoading();
         const odgovor = await ZakupciService.dodaj(e);
+        hideLoading();
         if(odgovor.greska){
             alert(odgovor.poruka);
             return;

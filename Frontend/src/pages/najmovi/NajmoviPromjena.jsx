@@ -1,9 +1,15 @@
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { RouteNames } from "../../constants";
-import NajmoviService from "../../services/NajmoviService";
-import { useEffect, useState } from "react";
-import { TbDecimal } from "react-icons/tb";
+import { APP_URL, RouteNames } from "../../constants";
+import StanoviService from "../../services/StanoviService";
+import { useEffect, useState, useRef } from "react";
+
+// Import useLoading only once
+import useLoading from "../../hooks/useLoading";
+
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+import nepoznato from '../../novo/nepoznato.png';
 
 // *********************************************************************************************************
 
@@ -11,6 +17,7 @@ export default function NajmoviPromjena() {
     const navigate = useNavigate();
     const {idnajmovi} = useParams();
     const [najam, setNajam] = useState({});
+    const { showLoading, hideLoading } = useLoading();
 
     async function dohvatiNajam() {
         const odgovor = await NajmoviService.getBySifra(idnajmovi);
@@ -28,7 +35,9 @@ export default function NajmoviPromjena() {
 // *********************************************************************************************************
 
     async function promjena(najam) {
+        showLoading();
         const odgovor = await NajmoviService.promjena(idnajmovi, najam);
+        hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;

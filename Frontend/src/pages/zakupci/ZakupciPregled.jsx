@@ -3,19 +3,23 @@ import ZakupciService from "../../services/ZakupciService";
 import { useEffect, useState } from "react";
 import { RouteNames } from "../../constants";
 import { Link, useNavigate } from "react-router-dom";
+import useLoading from "../../hooks/useLoading";
 
 //**************************************************************************************************************************************************
 
 export default function ZakupciPregled(){
     const [zakupci,setZakupci] = useState([]);
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
 
     async function dohvatiZakupci() 
     {
+        showLoading();
         // zaustavi kod u Chrome consoli i tamo se može raditi debug
         //debugger;
         const odgovor = await ZakupciService.get();
         await ZakupciService.get()
+        hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
@@ -33,6 +37,8 @@ export default function ZakupciPregled(){
 // ****************************************************************************************************************************************************
 
     async function obrisi(idzakupci) {
+        showLoading();
+        hideLoading();
         console.log('Brisanje zakupaca s šifrom:', idzakupci); // Dodano za dijagnostiku
         //console.log(odgovor);
         if(!confirm('Sigurno obrisati')){

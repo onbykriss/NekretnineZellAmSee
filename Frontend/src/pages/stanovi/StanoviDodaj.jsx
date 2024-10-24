@@ -2,17 +2,21 @@ import StanoviService from "../../services/StanoviService";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
+import useLoading from "../../hooks/useLoading";
 
 
 // **********************************************************************************************************
 export default function StanoviDodaj() {
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
 
     async function Dodaj(stan) {
         
         //console.log(stan)
         //console.log(JSON.stringify(stan))
+        showLoading();
         const odgovor = await StanoviService.dodaj(stan)
+        hideLoading();
         if(odgovor.greska){
             alert(odgovor.poruka)
             return;

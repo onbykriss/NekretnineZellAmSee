@@ -3,16 +3,18 @@ import NajmoviService from "../../services/NajmoviService";
 import { Button, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
+import useLoading from "../../hooks/useLoading";
 
 //**************************************************************************************************************************************************
 
 export default function NajmoviPregled() {
     console.log('Component rendering'); // Debugging log
-    
+    const { showLoading, hideLoading } = useLoading();
     const navigate = useNavigate();
     const [najmovi, setNajmovi] = useState([]);
 
     async function dohvatiNajmove() {
+        showLoading();
         console.log('Fetching rentals...'); // Debugging log
         const odgovor = await NajmoviService.get();
         console.log('Response from server:', odgovor); // Debugging log
@@ -26,6 +28,7 @@ export default function NajmoviPregled() {
         console.log('Updated najmovi:', updatedNajmovi); // Debugging log
         
         setNajmovi(updatedNajmovi);
+        hideLoading();
     }
 
     useEffect(() => {
@@ -35,6 +38,7 @@ export default function NajmoviPregled() {
     //**************************************************************************************************************************************************
 
     function obrisi(sifra) {
+    
         if (!confirm('Sigurno obrisati')) {
             return;
         }
@@ -42,8 +46,10 @@ export default function NajmoviPregled() {
     }
 
     async function brisanjeNajmove(sifra) {
+        showLoading();
         console.log('Brisanje najmova s šifrom:', sifra); // Debugging log
         const odgovor = await NajmoviService.brisanje(sifra);
+        hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;

@@ -7,10 +7,17 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { RouteNames } from '../constants';
+import { APP_URL } from '../constants';
 
 export default function NavBarNekretnine() {
    const navigate = useNavigate()
-    
+   
+   function OpenSwaggerURL(){
+    window.open(APP_URL + "/swagger/index.html", "_blank")
+  }
+
+
+
   return (
     <>
       {['xl'].map((expand) => (
@@ -34,7 +41,7 @@ export default function NavBarNekretnine() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                   <Nav.Link href="https://kristinandric-001-site1.etempurl.com/swagger/index.html" target="_blank">Swagger</Nav.Link>
+                   <Nav.Link onClick={()=>OpenSwaggerURL()}>Swagger</Nav.Link>
                     <NavDropdown title="Nekretnine" id="basic-nav-dropdown">
                      <NavDropdown.Item onClick={()=>navigate(RouteNames.STANOVI_PREGLED)}>Stanovi</NavDropdown.Item>
                      <NavDropdown.Item onClick={()=>navigate(RouteNames.ZAKUPCI_PREGLED)}>Zakupci</NavDropdown.Item>

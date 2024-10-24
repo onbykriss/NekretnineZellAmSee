@@ -57,10 +57,33 @@ async function getBySifra(sifra){
     })
 }
 
+async function getStranicenje(stranica,uvjet){
+    return await HttpService.get('/Stan/traziStranicenje/'+stranica + '?uvjet=' + uvjet)
+    .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
+    .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja stanova '}});
+}
+
+async function traziIdstanovi(idstanovi){
+        return await HttpService.get('/Stan/traziIdstanovi/'+idstanovi)
+        .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
+        .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja stanova '}});
+}
+
+async function postaviSliku(idstanovi, slika) {
+        return await HttpService.put('/Stan/postaviSliku/' + idstanovi, slika)
+        .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
+        .catch((e)=>{ return {greska: true, poruka: 'Problem kod postavljanja slike stana '}});
+}
+
+
+
 export default {
     get,
     brisanje,
     dodaj,
     getBySifra,
-    promjena
+    promjena,
+    getStranicenje,
+    traziIdstanovi,
+    postaviSliku
 }

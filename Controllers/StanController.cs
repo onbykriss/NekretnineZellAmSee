@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NekretnineZellAmSee.Data;
 using NekretnineZellAmSee.Models;
 using NekretnineZellAmSee.Models.DTO;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NekretnineZellAmSee.Controllers
 {
@@ -153,5 +155,84 @@ namespace NekretnineZellAmSee.Controllers
                 return BadRequest(new { poruka = ex.Message });
             }
         }
+
+        // Dodavanje funkcije traženja i straničenja********************************************************************************************+
+
+        [HttpGet]
+        [Route("traziStranicenje/{stranica}")]
+        public IActionResult TrazistanStranicenje(int stranica, string uvjet = "")
+        {
+            var poStranici = 4;
+            uvjet = uvjet.ToLower();
+            try
+            {
+                IEnumerable<Stan> query = _context.Stanovi.Skip((poStranici * stranica) - poStranici);
+                var niz = uvjet.Split(" ");
+                foreach (var s in uvjet.Split(" "))
+                {
+                    query = query.Where(p => p.Adresa.ToLower().Contains(s));
+                }
+
+                query = query.Take(poStranici)
+                .OrderBy(p => p.Adresa);
+
+                var stanovi = query.ToList();
+                    return Ok(_mapper.Map<List<StanDTORead>>(stanovi));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        //*****************************************************************************************************************************+
+
+        [HttpPut]
+        [Route("postaviSliku/{sifra:int}")]
+        public IActionResult PostaviSliku(int sifra, SlikaDTO slika)
+        {
+            if (sifra <= 0)
+            {
+                return BadRequest("Šifra mora biti veća od nula (0)");
+            }
+            if (slika.Base64 == null || slika.Base64?.Length == 0)
+            {
+                return BadRequest("Slika nije postavljena");
+            }
+            var p = _context.Stanovi.Find(sifra);
+            if (p == null)
+            {
+                return BadRequest("Ne postoji stan s šifrom " + sifra + ".");
+            }
+            try
+            {
+                var ds = Path.DirectorySeparatorChar;
+                string dir = Path.Combine(Directory.GetCurrentDirectory()
+                    + ds + "wwwroot" + ds + "slike" + ds + "stan");
+                if (!System.IO.Directory.Exists(dir))
+                {
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+                var putanja = Path.Combine(dir + ds + sifra + ".png");
+                System.IO.File.WriteAllBytes(putanja, Convert.FromBase64String(slika.Base64!));
+                return Ok("Uspješno pohranjena slika");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
+
+
+
     }
 }
+
+
+
+
+
+    
