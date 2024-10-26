@@ -1,8 +1,11 @@
 import { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
+
 export const LoadingContext = createContext();
+
 export function LoadingProvider({ children }) {
   const [loading, setLoading] = useState(false);
+  
   function showLoading() {
     setLoading(true);
   }

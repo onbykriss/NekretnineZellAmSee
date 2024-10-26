@@ -1,23 +1,24 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Container from 'react-bootstrap/Container';
 import './App.css'
-import NavBarNekretnine from './Components/NavBarNekretnine';
-import { Route, Routes } from 'react-router-dom';
-import { RouteNames } from './constants';
-import Pocetna from './pages/Pocetna';
-import StanoviPregled from './pages/stanovi/StanoviPregled';
-import StanoviDodaj from './pages/stanovi/StanoviDodaj';
-import StanoviPromjena from './pages/stanovi/StanoviPromjena';
-import ZakupciPregled from './pages/zakupci/ZakupciPregled';
-import ZakupciDodaj from './pages/zakupci/ZakupciDodaj';
-import ZakupciPromjena from './pages/zakupci/ZakupciPromjena';
-import NajmoviPregled from './pages/najmovi/NajmoviPregled';
-import NajmoviDodaj from './pages/najmovi/NajmoviDodaj';
-import NajmoviPromjena from './pages/najmovi/NajmoviPromjena';
+import NavBarNekretnine from './Components/NavBarNekretnine'
+import { Route, Routes } from 'react-router-dom'
+import { RouteNames } from './constants'
+import StanoviPregled from './pages/stanovi/StanoviPregled'
+import StanoviDodaj from './pages/stanovi/StanoviDodaj'
+import StanoviPromjena from './pages/stanovi/StanoviPromjena'
+import { Container } from 'react-bootstrap'
+import ZakupciPregled from './pages/zakupci/ZakupciPregled'
+import ZakupciDodaj from './pages/zakupci/ZakupciDodaj'
+import ZakupciPromjena from './pages/zakupci/ZakupciPromjena'
+import NajmoviPregled from './pages/najmovi/NajmoviPregled'
+import NajmoviDodaj from './pages/najmovi/NajmoviDodaj'
+import NajmoviPromjena from './pages/najmovi/NajmoviPromjena'
 import LoadingSpinner from './Components/LoadingSpinner'
+import Pocetna from './pages/Pocetna'
 
-
+// *********************************************************************************************************
 function App() {
+
 
   function godina(){
     const pocenta = 2024;
@@ -28,6 +29,7 @@ function App() {
     return pocenta + ' - ' + trenutna;
   }
 
+
   return (
     <>
     <LoadingSpinner />
@@ -35,7 +37,7 @@ function App() {
       <NavBarNekretnine />
       <Routes>
         <Route path={RouteNames.HOME} element={<Pocetna/>} />
-
+       
         <Route path={RouteNames.STANOVI_PREGLED} element={<StanoviPregled />} />
         <Route path={RouteNames.STANOVI_NOVI} element={<StanoviDodaj />} />
         <Route path="/stanovi/promjena/:idstanovi" element={<StanoviPromjena />} />
@@ -47,10 +49,13 @@ function App() {
         <Route path={RouteNames.NAJMOVI_PREGLED} element={<NajmoviPregled />} />
         <Route path={RouteNames.NAJMOVI_NOVI} element={<NajmoviDodaj />} />
         <Route path="/najmovi/promjena/:idnajmovi" element={<NajmoviPromjena />} />
+      
         
       </Routes>
+      </Container>
+    <Container>
       <hr/>
-      &copy; Nekretnine Zell am See 2024
+      &copy; Nekretnine Zell am See, {godina()}
     </Container>
     
     </>

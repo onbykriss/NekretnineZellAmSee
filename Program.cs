@@ -2,6 +2,8 @@
 using NekretnineZellAmSee.Data;
 using NekretnineZellAmSee.Mapping;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,54 +13,85 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//************************************************************************************************************
+builder.Services.AddCors(options => // Replace this line
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+//************************************************************************************************************
+
 // dodavanje baze podataka
-builder.Services.AddDbContext<NekretnineZellAmSeeContext>(opcije =>
+builder.Services.AddDbContext<NekretnineZellAmSeeContext>(
+    opcije =>
 {
     opcije.UseSqlServer(builder.Configuration.GetConnectionString("NekretnineContext"));
 });
 
-// Svi se od svuda na sve moguæe naèine mogu spojitina naš API
-// Čitati https://code-maze.com/aspnetcore-webapi-best-practices/
-builder.Services.AddCors(opcije =>
-{
-    opcije.AddPolicy("CorsPolicy",
-        builder =>
-            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-    );
-});
-
+//************************************************************************************************************
 
 // automapper
 builder.Services.AddAutoMapper(typeof(NekretnineZellAmSeeMappingProfile));
 
+//************************************************************************************************************
 
+// SECURITY
+//builder.Services.AddEdunovaSecurity();
+//builder.Services.AddAuthorization();
+// END SECURITY
 
+//************************************************************************************************************
 
 var app = builder.Build();
+
+//************************************************************************************************************
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 // {
-    app.UseSwagger();
-    app.UseSwaggerUI(o => {
+app.UseSwagger();
+app.UseSwaggerUI(o =>
+{
 
-        o.ConfigObject.AdditionalItems.Add("requestSnippetsEnabled", true);
-        o.EnableTryItOutByDefault();
+    o.ConfigObject.AdditionalItems.Add("requestSnippetsEnabled", true);
+    o.EnableTryItOutByDefault();
+    o.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
 
-    });
+});
 //}
+
+//************************************************************************************************************
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//************************************************************************************************************
+
+// SECURITY
+//app.UseAuthentication();
+//app.UseAuthorization();
+// ENDSECURITY
+
+//************************************************************************************************************
 
 app.MapControllers();
+
+//************************************************************************************************************
 
 // za potrebe produkcije
 app.UseStaticFiles();
 app.UseDefaultFiles();
 app.MapFallbackToFile("index.html");
 
+//************************************************************************************************************
+
 app.UseCors("CorsPolicy");
+// završio za potrebe produkcije
+
+//************************************************************************************************************
 
 app.Run();

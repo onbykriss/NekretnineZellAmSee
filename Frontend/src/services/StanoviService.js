@@ -4,79 +4,117 @@ import { HttpService } from "./HttpService";
 async function get() {
     return await HttpService.get('/Stan')  //('/Stanovi') je ruta
     .then((odgovor)=>{
-        
-        return {greska: false, poruka: odgovor.data}
+        return odgovor.data
     })
-    .catch((e)=>{
-        
-        return {greska: true, poruka: 'Problem kod dohvaćanja stanova'}   
-    })
+    .catch((e)=>{console.error(e)})
+    
 }
 
 //****BRISANJE********************************************************************************************************
-async function brisanje(sifra){
+async function brisanje(Idstanovi){
 
-    return await HttpService.delete('/Stan/' + sifra)
-    .then(()=>{
-        return {greska: false, poruka: 'Obrisano'}
+    return await HttpService.delete('/Stan/' + Idstanovi)
+    .then((odgovor)=>{
+        return {greska: false, poruka: odgovor.data}
     })
     .catch(()=>{
-        return {greska: true, poruka: 'Problem kod brisanja stana'}   
+        return {greska: true, poruka: 'Stan se nemože obrisati'}   
     })
 }
 
 //****DODAJ********************************************************************************************************
-async function dodaj(stan){
-    return await HttpService.post('/Stan', stan)
-    .then(()=>{
-        return {greska: false, poruka: 'Dodano'}
-    })
-    .catch(()=>{
-        return {greska: true, poruka: 'Problem kod dodavanja stana'}   
-    })
-}
-
-//****PROMJENA********************************************************************************************************
-async function promjena(sifra, stan){
-    return await HttpService.put('/Stan/' + sifra, stan)
-    .then(()=>{
-        return {greska: false, poruka: 'Dodano'}
-    })
-    .catch(()=>{
-        return {greska: true, poruka: 'Problem kod dodavanja stana'}   
-    })
-}
-
-//**GETBYSIFRA**********************************************************************************************************
-async function getBySifra(sifra){
-    return await HttpService.get('/Stan/'+ sifra)
+async function dodaj(Stan){
+    return await HttpService.post('/Stan', Stan)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
     .catch((e)=>{
-        return {greska: true, poruka: 'Problem kod dohvaćanja stana s šifrom '+ sifra}   
+        switch(e.status){
+            case 400:
+                 let poruke = '';
+                 for(const kljuc in e.response.data.errors){
+                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0] + '\n';
+                    }  
+                    return {greska: true, poruka: poruke}  
+            default:
+                return {greska: true, poruka: 'stan se nemože dodati'}
+        }
     })
 }
 
+//****PROMJENA********************************************************************************************************
+async function promjena(Idstanovi, Stan){
+    return await HttpService.put('/Stan/' + Idstanovi, Stan)
+    .then((odgovor)=>{
+        return {greska: false, poruka: odgovor.data}
+    })
+    .catch((e)=>{
+        switch(e.status){
+            case 400:
+                 let poruke = '';
+                 for(const kljuc in e.response.data.errors){
+                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0] + '\n';
+                    }  
+                    return {greska: true, poruka: poruke}  
+            default:
+                return {greska: true, poruka: 'stan se nemože promjeniti'}
+        }
+    })
+}
+
+//**GETBYSIFRA**********************************************************************************************************
+async function getBySifra(Idstanovi){
+    return await HttpService.get('/Stan/'+ Idstanovi)
+    .then((odgovor)=>{
+        return {greska: false, poruka: odgovor.data}
+    })
+    .catch(()=>{
+        return {greska: true, poruka: 'stan ne postoji'}   
+    })
+}
+
+//**TRAZIIDSTANOVI**********************************************************************************************************
+async function traziStan(uvjet){
+    return await HttpService.get('/Stan/trazi/'+ uvjet)
+    .then((odgovor)=>{
+        return  {greska: false, poruka: odgovor.data}
+    })
+    .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja stanova'}});
+}
+
+//**GETSTRANICENJE**********************************************************************************************************
 async function getStranicenje(stranica,uvjet){
     return await HttpService.get('/Stan/traziStranicenje/'+stranica + '?uvjet=' + uvjet)
     .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
     .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja stanova '}});
 }
 
-async function traziIdstanovi(idstanovi){
-        return await HttpService.get('/Stan/traziIdstanovi/'+idstanovi)
-        .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
-        .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja stanova '}});
-}
-
+//**POSTAVISLIKU**********************************************************************************************************
 async function postaviSliku(idstanovi, slika) {
         return await HttpService.put('/Stan/postaviSliku/' + idstanovi, slika)
         .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
         .catch((e)=>{ return {greska: true, poruka: 'Problem kod postavljanja slike stana '}});
 }
 
+//**EXPORT**********************************************************************************************************
+async function ukupnoStanova(){
+    return await HttpService.get('/Pocetna/UkupnoStanova')
+    .then((odgovor)=>{
+        //console.table(odgovor.data);
+        return odgovor.data;
+    })
+    .catch((e)=>{console.error(e)})
+}
 
+//************************************************************************************************************
+async function dostupniStanovi(){
+    return await HttpService.get('/Pocetna/Dostupnistanovi')
+    .then((odgovor)=>{
+        //console.table(odgovor.data);
+        return odgovor.data;
+    })
+    .catch((e)=>{console.error(e)})
+}
 
 export default {
     get,
@@ -84,7 +122,11 @@ export default {
     dodaj,
     getBySifra,
     promjena,
+    
     getStranicenje,
-    traziIdstanovi,
-    postaviSliku
+    traziStan,
+    postaviSliku,
+
+    ukupnoStanova,
+    dostupniStanovi
 }

@@ -1,26 +1,28 @@
+import ZakupciService from "../../services/ZakupciService";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RouteNames } from "../../constants";
-import ZakupciService from "../../services/ZakupciService";
 import { useEffect, useState } from "react";
+import useLoading from "../../hooks/useLoading";
 
 //*********************************************************************************************************
 export default function ZakupciPromjena(){
-    const navigate = useNavigate();
-    const routeParams = useParams();
     const [zakupac,setZakupac] = useState({});
+    const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
+    const routeParams = useParams();
     
-    console.log('Route params:', routeParams);
-
+    //*********************************************************************************************************
     async function dohvatiZakupca(){
-        console.log('Dohvaćanje zakupca s šifrom:', routeParams.Idzakupci);
-        if (!routeParams.idzakupci){
-            console.error('Idzakupci parameter is undefined');
-            alert('Nije dodeljen ID zakupca');
+        showLoading();
+        const odgovor = await ZakupciService.getBySifra(routeParams.Idzakupci);
+        hideLoading();
+        if (odgovor.greska){
+            alert(odgovor.poruka);
             return;
         }
         try{
-            const odgovor = await ZakupciService.getBySifra(routeParams.idzakupci);
+            const odgovor = await ZakupciService.getBySifra(routeParams.Idzakupci);
             if (odgovor.greska){
                 console.error("Error dohvačanja zakupca", odgovor.poruka);
                 alert(odgovor.poruka);
@@ -35,13 +37,16 @@ export default function ZakupciPromjena(){
         }
     }
 
+    //*********************************************************************************************************
     useEffect(()=>{
         dohvatiZakupca();
     }, []);
 
 //*********************************************************************************************************
     async function promjena(zakupac){
-        const odgovor = await ZakupciService.promjena(routeParams.idzakupci, zakupac);  
+        showLoading();
+        const odgovor = await ZakupciService.promjena(routeParams.Idzakupci, zakupac);  
+        hideLoading();
         if (odgovor.greska){
             alert(odgovor.poruka);
             return;
@@ -49,10 +54,11 @@ export default function ZakupciPromjena(){
         navigate(RouteNames.ZAKUPCI_PREGLED);
     }
 
+    //*********************************************************************************************************
     function obradiSubmit(e) 
     { 
         e.preventDefault();
-        const podaci = new FormData(e.target);
+        let podaci = new FormData(e.target);
         promjena({
             ime: podaci.get('ime'),
             prezime: podaci.get('prezime'),
@@ -74,8 +80,7 @@ export default function ZakupciPromjena(){
                     <Form.Control 
                     type="text" 
                     name="ime" 
-                    required 
-                    defaultValue={zakupac.ime} />
+                    required defaultValue={zakupac.ime} />
                 </Form.Group>
 
                 <Form.Group controlId="prezime">
@@ -105,6 +110,7 @@ export default function ZakupciPromjena(){
                     defaultValue={zakupac.telefon} />
                 </Form.Group>
                 <hr />
+                
                 <Row className="akcije">
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
                         <Link to={RouteNames.ZAKUPCI_PREGLED}

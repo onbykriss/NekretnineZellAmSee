@@ -5,63 +5,118 @@ async function get() {
     return await HttpService.get('/Zakupac')
         .then((odgovor) => {
 
-            return {greska: false, poruka: odgovor.data}
+            return odgovor.data;
         })
-        .catch((e) => {
-
-            return {greska: true, poruka: 'Problem kod dohvaćanja stanova'} 
-        })
+        .catch((e) => {console.error(e)})    
 }
 
 //****BRISANJE**********************************************************************************************************
-async function brisanje(sifra) {
-    return await HttpService.delete('/Zakupac/' + sifra)
-        .then(() => {
-            return { greska: false, poruka: 'Obrisano' }
+async function brisanje(Idzakupci) {
+    return await HttpService.delete('/Zakupac/' + Idzakupci)
+        .then((odgovor) => {
+            return { greska: false, poruka: odgovor.data }
         })
         .catch(() => {
-            return { greska: true, poruka: 'Problem kod brisanja stana' }
+            return { greska: true, poruka: 'Zakupac se nemože obrisati' }
         })
 }
 
 //*****DODAJ*********************************************************************************************************
-async function dodaj(zakupac) {
-    return await HttpService.post('/Zakupac', zakupac)
-        .then(() => {
-            return { greska: false, poruka: 'Dodano'};
+async function dodaj(Zakupac) {
+    return await HttpService.post('/Zakupac', Zakupac)
+        .then((odgovor) => {
+            return { greska: false, poruka: odgovor.data };
         })
-        .catch(() => {
-            return { greska: true, poruka: 'Problem kod dodavanja zakupca'}
+        .catch((e) => {
+            switch (e.status) {
+                case 400:
+                    let poruke = '';
+                    for (const kljuc in e.response.data.errors) {
+                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0]
+                    }
+                    return { greska: true, poruka: poruke }
+                default:
+                    return { greska: true, poruka: 'Zakupac se nemože dodati' }
+            }
         })
 }
 
 //******PROMJENA********************************************************************************************************
-async function promjena(sifra, zakupac) {
-    return await HttpService.put('/Zakupac/' + sifra, zakupac)
-        .then(() => {
-            return { greska: false, poruka: 'Promijenjeno'};
+async function promjena(Idzakupci, Zakupac) {
+    return await HttpService.put('/Zakupac/' + Idzakupci, Zakupac)
+        .then((odgovor) => {
+            return { greska: false, poruka: odgovor.data };
         })
-        .catch(() => {
-           return { greska: true, poruka: 'Problem kod promjene zakupca' };  
-        });
+        .catch((e) => {
+           switch (e.status) {
+                case 400:
+                    let poruke = '';
+                    for (const kljuc in e.response.data.errors) {
+                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0]
+                    }
+                    return { greska: true, poruka: poruke }
+                default:
+                    return { greska: true, poruka: 'Zakupac se nemože promjeniti' }
+            }  
+        })
 }
 
 //****GETBYSIFRA**********************************************************************************************************
-async function getBySifra(sifra) {
-    return await HttpService.get('/Zakupac/' + sifra)
+async function getBySifra(Idzakupci) {
+    return await HttpService.get('/Zakupac/' + Idzakupci)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data }
         })
-        .catch((e) => {
-            return { greska: true, poruka: 'Problem kod dohvačanja zakupca s šifrom' + sifra }
+        .catch(() => {
+            return { greska: true, poruka: 'Zakupac ne postoji'}
         })
 }
 
+//**************************************************************************************************************
+async function traziZakupac(uvjet){
+    return await HttpService.get('/Zakupac/trazi/'+uvjet)
+    .then((odgovor)=>{
+        //console.table(odgovor.data);
+        return {greska: false, poruka: odgovor.data}
+    })
+    .catch((e)=>{return {greska: true, poruka: 'Problem kod traženja zakupca'}})
+}
+
+//**************************************************************************************************************
+async function getStranicenje(stranica,uvjet){
+    return await HttpService.get('/Zakupac/traziStranicenje/'+stranica + '?uvjet=' + uvjet)
+    .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
+    .catch((e)=>{ return {greska: true, poruka: 'Problem kod traženja zakupca '}});
+  }
+
+//**************************************************************************************************************
+  async function postaviSliku(Idzakupci, slika) {
+    return await HttpService.put('/Zakupac/postaviSliku/' + Idzakupci, slika)
+    .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
+    .catch((e)=>{ return {greska: true, poruka: 'Problem kod postavljanja slike zakupca '}});
+  }
+
+//**************************************************************************************************************
+  async function ukupnoZakupca(){
+    return await HttpService.get('/Pocetna/UkupnoZakupca')
+    .then((odgovor)=>{
+        //console.table(odgovor.data);
+        return odgovor.data;
+    })
+    .catch((e)=>{console.error(e)})
+}
+//**************************************************************************************************************
 
 export default {
     get,
     getBySifra,
     brisanje,
     dodaj,
-    promjena
+    promjena,
+
+    traziZakupac,
+    getStranicenje,
+    postaviSliku,
+
+    ukupnoZakupca
 }

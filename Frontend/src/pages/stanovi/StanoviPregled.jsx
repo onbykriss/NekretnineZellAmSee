@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { Button, Card, Col, Form, Pagination, Row } from "react-bootstrap";
 import StanoviService from "../../services/StanoviService";
+import { useEffect, useState } from "react";
 import { APP_URL, RouteNames } from "../../constants";
 import { Link } from "react-router-dom";
 import nepoznato from "../../novo/nepoznato.png";
+import { IoIosAdd } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useLoading from "../../hooks/useLoading";
-import { Button, Card, Col, Form, Pagination, Row } from "react-bootstrap";
+
 
 
 export default function StanoviPregled() {
@@ -16,7 +18,7 @@ export default function StanoviPregled() {
    
     //***************************************************************************************
     async function dohvatiStanove() {
-        console.log('Dohvaćanje stanova...');
+       
         showLoading();
         const odgovor = await StanoviService.getStranicenje(stranica,uvjet);
         hideLoading();
@@ -48,12 +50,9 @@ export default function StanoviPregled() {
         dohvatiStanove();
     }
     
-    function obrisi(sifra){
-        obrisiAsync(sifra);
+    function obrisi(Idstanovi){
+        obrisiAsync(Idstanovi);
     }
-
-    //***************************************************************************************
-
     
     //***************************************************************************************
     function slika(stan) {
@@ -93,7 +92,7 @@ export default function StanoviPregled() {
                     type='text'
                     name='trazilica'
                     placeholder='Dio adrese [Enter]'
-                    maxLength={100}
+                    maxLength={225}
                     defaultValue=''
                     onKeyUp={promjeniUvjet}
                     />
@@ -101,7 +100,7 @@ export default function StanoviPregled() {
                 <Col key={2} sm={12} lg={4} md={4}>
                     {stanovi && stanovi.length > 0 && (
                             <div style={{ display: "flex", justifyContent: "center" }}>  
-                                <Pagination size="md">
+                                <Pagination size="lg">
                                 <Pagination.Prev onClick={smanjiStranicu} />
                                 <Pagination.Item disabled>{stranica}</Pagination.Item> 
                                 <Pagination.Next
@@ -113,24 +112,24 @@ export default function StanoviPregled() {
                 </Col>
                 <Col key={3} sm={12} lg={4} md={4}>
                     <Link to={RouteNames.STANOVI_NOVI} className="btn btn-success gumb">
-                        Dodaj novi stan
+                        <IoIosAdd 
+                        size={25}
+                        /> Dodaj
                     </Link>
                 </Col>
             </Row>
             
                 
             <Row>
-                
-            { stanovi && stanovi.map((p) => (
-           <Col key={p.sifra} sm={12} lg={3} md={3}>
+             { stanovi && stanovi.map((p) => (
+
+             <Col key={p.idstanovi} sm={12} lg={3} md={3}>
               <Card style={{ marginTop: '1rem' }}>
               <Card.Img variant="top" src={slika(p)} className="slika"/>
                 <Card.Body>
                   <Card.Title>{p.adresa}</Card.Title>
-                  <Card.Text>
-                    {p.email}
-                  </Card.Text>
-                  <Row>
+                  <Card.Text>{p.email}</Card.Text>
+                    <Row>
                       <Col>
                       <Link className="btn btn-primary gumb" to={`/stanovi/${p.Idstanovi}`}><FaEdit /></Link>
                       </Col>

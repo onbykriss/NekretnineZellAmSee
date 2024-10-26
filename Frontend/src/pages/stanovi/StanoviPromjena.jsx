@@ -3,20 +3,20 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { APP_URL, RouteNames } from "../../constants";
 import StanoviService from "../../services/StanoviService";
 import { useEffect, useState, useRef } from "react";
+
 import useLoading from "../../hooks/useLoading";
+
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import nepoznato from '../../novo/nepoznato.png';
 
-
 // *********************************************************************************************************
 export default function StanoviPromjena() {
-
-    const { showLoading, hideLoading } = useLoading();
-    const [stan, setStan] = useState({});
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
     const routeParams = useParams();
-
+    const [stan, setStan] = useState({});
+    
     const [trenutnaSlika, setTrenutnaSlika] = useState('');
     const [slikaZaCrop, setSlikaZaCrop] = useState('');
     const [slikaZaServer, setSlikaZaServer] = useState('');
@@ -45,7 +45,7 @@ export default function StanoviPromjena() {
     }, []);
 
 // *********************************************************************************************************
-    async function promjena(stan) {
+    async function promjena(e) {
         showLoading();
         const odgovor = await StanoviService.promjena(routeParams.idstanovi, e); 
         hideLoading();
@@ -59,12 +59,13 @@ export default function StanoviPromjena() {
     // *********************************************************************************************************
     function obradiSubmit(e) {
       e.preventDefault();
+
       const podaci = new FormData(e.target);
-        promjena ({
+        
+      promjena ({
          kvadratura: parseFloat(podaci.get('kvadratura')),
          adresa: podaci.get('adresa'),
-         oprema: podaci.get('oprema'),
-         slika: podaci.get('slika')
+         oprema: podaci.get('oprema')
         });        
     }
 
@@ -115,37 +116,17 @@ export default function StanoviPromjena() {
               <Form onSubmit={obradiSubmit}>
                 <Form.Group controlId="kvadratura">
                     <Form.Label>Kvadratura</Form.Label>
-                    <Form.Control 
-                    type="number" min={10} max={5000} 
-                    name="kvadratura" 
-                    required 
-                    defaultValue={stan.kvadratura}/>
+                    <Form.Control type="number" min={10} max={5000} name="kvadratura" required defaultValue={stan.kvadratura}/>
                 </Form.Group>
 
                 <Form.Group controlId="adresa">
                     <Form.Label>Adresa</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    name="adresa" 
-                    required 
-                    defaultValue={stan.adresa}/>
+                    <Form.Control type="text" name="adresa" required defaultValue={stan.adresa}/>
                 </Form.Group>
 
                 <Form.Group controlId="oprema">
                     <Form.Label>Oprema</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    name="oprema" 
-                    required 
-                    defaultValue={stan.oprema}/>
-                </Form.Group>
-
-                <Form.Group controlId="slika">
-                    <Form.Label>Slika</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    name="slika" 
-                    defaultValue={stan.slika}/>
+                    <Form.Control type="text" name="oprema" required defaultValue={stan.oprema}/>
                 </Form.Group>
                 <hr />
 

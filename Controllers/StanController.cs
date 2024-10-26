@@ -167,6 +167,7 @@ namespace NekretnineZellAmSee.Controllers
             try
             {
                 IEnumerable<Stan> query = _context.Stanovi.Skip((poStranici * stranica) - poStranici);
+
                 var niz = uvjet.Split(" ");
                 foreach (var s in uvjet.Split(" "))
                 {
