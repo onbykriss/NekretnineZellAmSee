@@ -20,6 +20,7 @@ export default function NajmoviPromjena() {
     const [najam, setNajam] = useState({});
     const { showLoading, hideLoading } = useLoading();
     const routeParams = useParams();
+    
     const [stanovi, setStanovi] = useState([]);
     const [stanSifra, setStanSifra] = useState(0);
     const [zakupci, setZakupci] = useState([]);
@@ -45,7 +46,7 @@ export default function NajmoviPromjena() {
         n.datumZavrsetka = moment.utc(n.datumZavrsetka).format('yyyy-MM-DD')
         setNajam(n);
         setStanSifra(n.idstanovi)
-        setZakupacSifra(n.idzakupci)
+        setZakupacSifra(n.idzakupci || zakupacSifra)
     }
 
     useEffect(() => {
@@ -59,6 +60,14 @@ export default function NajmoviPromjena() {
 
     async function promjena(najam) {
         showLoading();
+
+        if (!najam.idzakupci || najam.idzakupci === 0) {
+            hideLoading();
+            alert("Nije moguće promijeniti najam bez odabranog zakupca");
+            return;
+        }
+
+
         const odgovor = await NajmoviService.promjena(idnajmovi, najam);
         hideLoading();
         if (odgovor.greska) {
@@ -68,14 +77,31 @@ export default function NajmoviPromjena() {
         navigate(RouteNames.NAJMOVI_PREGLED);
     }
 
+// *********************************************************************************************************
+
     function obradiSubmit(e) {
         e.preventDefault();
 
+        console.log("Stanje zakupacSifra prije slanja:", zakupacSifra);
+
+        if (!zakupacSifra || zakupacSifra === 0) {
+            alert("Molimo odaberite zakupca");
+            return;
+          }
+
         const podaci = new FormData(e.target);
+        
+        console.log("Podaci za slanje:",{
+            idstanovi: parseInt(stanSifra),
+            idzakupci: parseInt(zakupacSifra),
+            datumPocetka: podaci.get('datumPocetka'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
+        });
 
         promjena({
             idstanovi: parseInt(stanSifra),
-            idzakupci: parseInt(podaci.get('idzakupci')),
+            idzakupci: parseInt(zakupacSifra),
             datumPocetka: podaci.get('datumPocetka'),
             datumZavrsetka: podaci.get('datumZavrsetka'),
             cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
