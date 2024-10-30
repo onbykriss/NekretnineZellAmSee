@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { APP_URL, RouteNames } from "../../constants";
 import { useEffect, useState, useRef } from "react";
 import useLoading from "../../hooks/useLoading";
-import useError from '../../hooks/useError';
+
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import nepoznato from '../../novo/nepoznato.png';

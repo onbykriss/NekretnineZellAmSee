@@ -5,6 +5,7 @@ import NajmoviService from "../../services/NajmoviService";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import StanoviService from '../../services/StanoviService';
+import ZakupciService from '../../services/ZakupciService';
 
 // Import useLoading only once
 import useLoading from "../../hooks/useLoading";
@@ -21,11 +22,17 @@ export default function NajmoviPromjena() {
     const routeParams = useParams();
     const [stanovi, setStanovi] = useState([]);
     const [stanSifra, setStanSifra] = useState(0);
+    const [zakupci, setZakupci] = useState([]);
+    const [zakupacSifra, setZakupacSifra] = useState(0);
 
   async function dohvatiStanove(){
     const odgovor = await StanoviService.get();
-    setStanovi(odgovor);
-  }
+    setStanovi(odgovor);}
+
+  async function dohvatiZakupce(){
+    const odgovor = await ZakupciService.get();
+    setZakupci(odgovor);}
+
 
     async function dohvatiNajam() {
         const odgovor = await NajmoviService.getBySifra(routeParams.idnajmovi);
@@ -38,11 +45,13 @@ export default function NajmoviPromjena() {
         n.datumZavrsetka = moment.utc(n.datumZavrsetka).format('yyyy-MM-DD')
         setNajam(n);
         setStanSifra(n.idstanovi)
+        setZakupacSifra(n.idzakupci)
     }
 
     useEffect(() => {
         dohvatiStanove();
         dohvatiNajam();
+        dohvatiZakupce();
 
     }, [idnajmovi]);
 
@@ -114,20 +123,21 @@ export default function NajmoviPromjena() {
                 onChange={(e)=>{setStanSifra(e.target.value)}}
                 >
                 {stanovi && stanovi.map((s,index)=>(
-                  <option key={index} value={s.idstanovi}>
-                    {s.adresa}
-                  </option>
+                  <option key={index} value={s.idstanovi}>{s.adresa}</option>
                 ))}
                 </Form.Select>
                 </Form.Group>
 
                 <Form.Group controlId="idzakupci">
                     <Form.Label>Zakupac</Form.Label>
-                    <Form.Control 
-                    type="number" 
-                    name="idzakupci" 
-                    required 
-                    defaultValue={najam.idzakupci}/>
+                    <Form.Select
+                value={zakupacSifra}
+                onChange={(e)=>{setZakupacSifra(e.target.value)}}
+                >
+                {zakupci && zakupci.map((s,index)=>(
+                  <option key={index} value={s.idzakupci}>{s.ime} {s.prezime}</option>
+                ))}
+                </Form.Select>
                 </Form.Group>
                 <hr />
                 <Row className="akcije">
