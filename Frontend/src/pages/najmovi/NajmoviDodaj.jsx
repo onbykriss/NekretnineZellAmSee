@@ -1,39 +1,70 @@
+import { Button, Col, Form, Image, Row } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { APP_URL, RouteNames } from "../../constants";
 import NajmoviService from "../../services/NajmoviService";
-import Service from "../../services/NajmoviService";
-import { Button, Row, Col, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { RouteNames } from "../../constants";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import StanoviService from '../../services/StanoviService';
+import ZakupciService from '../../services/ZakupciService';
 import useLoading from "../../hooks/useLoading";
-import useError from '../../hooks/useError';
-import StanoviService from "../../services/StanoviService";
 
 // **********************************************************************************************************
 export default function NajmoviDodaj() {
     const navigate = useNavigate();
+    const {idnajmovi} = useParams();
+    const [najam, setNajam] = useState({});
     const { showLoading, hideLoading } = useLoading();
+    const routeParams = useParams();
+    
     const [stanovi, setStanovi] = useState([]);
-    const [idstanovi, setidstanovi] = useState(0);
-    const { prikaziError } = useError();
-
+    const [stanSifra, setStanSifra] = useState(0);
+    const [zakupci, setZakupci] = useState([]);
+    const [zakupacSifra, setZakupacSifra] = useState(0);
+   
     // **********************************************************************************************************
     async function dohvatiStanove(){
-        showLoading();
         const odgovor = await StanoviService.get();
-        hideLoading();
-        setStanovi(odgovor.poruka);
-        setidstanovi(odgovor.poruka[0].sifra
-        );
-      }
+        setStanovi(odgovor);}
     
-      useEffect(()=>{
-        dohvatiStanove();
-    }, []);
+      async function dohvatiZakupce(){
+        const odgovor = await ZakupciService.get();
+        setZakupci(odgovor);}
+    
+    
+        async function dohvatiNajam() {
+            const odgovor = await NajmoviService.getBySifra(routeParams.idnajmovi);
+            if (odgovor.greska) {
+                alert(odgovor.poruka);
+                return;
+            }
+            let n = odgovor.poruka;
+            n.datumPocetka = moment.utc(n.datumPocetka).format('yyyy-MM-DD')
+            n.datumZavrsetka = moment.utc(n.datumZavrsetka).format('yyyy-MM-DD')
+            setNajam(n);
+            setStanSifra(n.idstanovi)
+            setZakupacSifra(n.idzakupci || zakupacSifra)
+        }
+    
+        useEffect(() => {
+            dohvatiStanove();
+            dohvatiNajam();
+            dohvatiZakupce();
+    
+        }, [idnajmovi]);
 
 
     // **********************************************************************************************************
-    async function dodaj(e) {
+    
+    async function dodaj(najam) {
         showLoading();
-        const odgovor = await Service.dodaj(e)
+
+        if (!najam.idstanovi || najam.idstanovi === '') {
+            alert("Molimo odaberite stan");
+            return;
+        }
+
+
+        const odgovor = await NajmoviService.dodaj(idnajmovi, najam);
         hideLoading();
         if(odgovor.greska){
             alert(odgovor.poruka)
@@ -45,11 +76,27 @@ export default function NajmoviDodaj() {
     // **********************************************************************************************************
     async function obradiSubmit(e) {
         e.preventDefault();
-        const podaci = new FormData(e.target)
+        
+        console.log("Stanje zakupacSifra prije slanja:", zakupacSifra);
        
+        if (!zakupacSifra || zakupacSifra === 0) {
+            alert("Molimo odaberite zakupca");
+            return;
+          }
+        
+        const podaci = new FormData(e.target)
+        
+        console.log("Podaci za slanje:",{
+            idstanovi: parseInt(stanSifra),
+            idzakupci: parseInt(zakupacSifra),
+            datumPocetka: podaci.get('datumPocetka'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
+        });
+    
         dodaj({
-            idstanovi: parseInt(podaci.get('idstanovi')),
-            idzakupci: parseInt(podaci.get('idzakupci')),
+            idstanovi: parseInt(stanSifra),
+            idzakupci: parseInt(zakupacSifra),
             datumPocetka: podaci.get('datumPocetka'),
             datumZavrsetka: podaci.get('datumZavrsetka'),
             cijenaNajma: parseFloat(podaci.get('cijenaNajma'))
@@ -62,61 +109,69 @@ export default function NajmoviDodaj() {
             Dodavanje novog najma
             
             <Form onSubmit={obradiSubmit}>
-            <Form.Group controlId="idstanovi">
-                    <Form.Label>Stanovi</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="idstanovi"
-                        required
-                    />
-                </Form.Group>
-
-                <Form.Group className='mb-3' controlId='stanovi'>
-                   <Form.Label>Stan</Form.Label>
-                <Form.Select 
-                      onChange={(e)=>{setidstanovi(e.target.value)}}
-                      >
-                         {stanovi && stanovi.map((s,index)=>(
-                       <option key={index} value={s.idstanovi}> 
-                      {s.naziv}</option>))}
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group controlId="idzakupci">
-                    <Form.Label>Zakupci_</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="idzakupci"
-                        required
-                    />
-                </Form.Group>
-
-                <Form.Group controlId="datumPocetka">
+            <Form.Group controlId="datumPocetka">
                     <Form.Label>Datum početka</Form.Label>
-                    <Form.Control
-                        type="date"
-                        name="datumPocetka"
-                        required
-                    />
+                    <Form.Control 
+                    type="date" 
+                    name="datumPocetka" 
+                    required 
+                    defaultValue={najam.datumPocetka}/>
                 </Form.Group>
 
                 <Form.Group controlId="datumZavrsetka">
                     <Form.Label>Datum završetka</Form.Label>
-                    <Form.Control
-                        type="date"
-                        name="datumZavrsetka"
-                        required
-                    />
+                    <Form.Control 
+                    type="date" 
+                    name="datumZavrsetka" 
+                    required 
+                    defaultValue={najam.datumZavrsetka}/>
                 </Form.Group>
 
                 <Form.Group controlId="cijenaNajma">
                     <Form.Label>Cijena najma</Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="cijenaNajma"
-                        required
-                    />  
+                    <Form.Control 
+                    type="number" 
+                    name="cijenaNajma" 
+                    required 
+                    defaultValue={najam.cijenaNajma}/>
                 </Form.Group>
+
+
+
+
+              <Form.Group controlId="idstanovi">
+                    <Form.Label>Stan</Form.Label>
+                    <Form.Select
+                value={stanSifra}
+                onChange={(e)=>{setStanSifra(e.target.value)}}
+                >
+                {stanovi && stanovi.map((s,index)=>(
+                  <option key={index} value={s.idstanovi}>{s.adresa}</option>
+                ))}
+                </Form.Select>
+                </Form.Group>
+
+
+
+
+                <Form.Group controlId="idzakupci">
+                    <Form.Label>Zakupac</Form.Label>
+                    <Form.Select
+                value={zakupacSifra}
+                onChange={(e)=>{setZakupacSifra(e.target.value)}}
+                >
+                {zakupci && zakupci.map((s,index)=>(
+                  <option key={index} value={s.idzakupci}>{s.ime} {s.prezime}</option>
+                ))}
+                </Form.Select>
+                </Form.Group>
+                <hr />
+
+
+
+
+
+                
 
                 <Row className="akcije">
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>

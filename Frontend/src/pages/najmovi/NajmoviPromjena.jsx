@@ -10,10 +10,7 @@ import ZakupciService from '../../services/ZakupciService';
 // Import useLoading only once
 import useLoading from "../../hooks/useLoading";
 
-
-
 // *********************************************************************************************************
-
 export default function NajmoviPromjena() {
     const navigate = useNavigate();
     const {idnajmovi} = useParams();
@@ -26,6 +23,7 @@ export default function NajmoviPromjena() {
     const [zakupci, setZakupci] = useState([]);
     const [zakupacSifra, setZakupacSifra] = useState(0);
 
+// *********************************************************************************************************
   async function dohvatiStanove(){
     const odgovor = await StanoviService.get();
     setStanovi(odgovor);}
@@ -109,7 +107,6 @@ export default function NajmoviPromjena() {
     }
 
 // *********************************************************************************************************
-
     return (
         <>
             Promjena najma
@@ -142,6 +139,11 @@ export default function NajmoviPromjena() {
                     defaultValue={najam.cijenaNajma}/>
                 </Form.Group>
                 
+
+
+
+
+                
                 <Form.Group controlId="idstanovi">
                     <Form.Label>Stan</Form.Label>
                     <Form.Select
@@ -153,6 +155,10 @@ export default function NajmoviPromjena() {
                 ))}
                 </Form.Select>
                 </Form.Group>
+
+
+
+
 
                 <Form.Group controlId="idzakupci">
                     <Form.Label>Zakupac</Form.Label>
@@ -166,6 +172,11 @@ export default function NajmoviPromjena() {
                 </Form.Select>
                 </Form.Group>
                 <hr />
+
+
+
+
+
                 <Row className="akcije">
                     <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
                         <Link to={RouteNames.NAJMOVI_PREGLED} 
