@@ -13,9 +13,6 @@ export async function get() {
 }
 
 
-
-
-
 //***BRISANJE*********************************************************************************************************
 async function obrisi(idnajmovi){
     return await HttpService.delete('/Najam/' + idnajmovi)

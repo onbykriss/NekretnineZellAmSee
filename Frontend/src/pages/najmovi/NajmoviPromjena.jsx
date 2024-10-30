@@ -20,7 +20,7 @@ export default function NajmoviPromjena() {
     const { showLoading, hideLoading } = useLoading();
     const routeParams = useParams();
     const [stanovi, setStanovi] = useState([]);
-  const [stanSifra, setStanSifra] = useState(0);
+    const [stanSifra, setStanSifra] = useState(0);
 
   async function dohvatiStanove(){
     const odgovor = await StanoviService.get();

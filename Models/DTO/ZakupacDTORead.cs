@@ -12,6 +12,7 @@
      string? Email,
 
      string? Telefon,
+
      string Slika
 
     );
