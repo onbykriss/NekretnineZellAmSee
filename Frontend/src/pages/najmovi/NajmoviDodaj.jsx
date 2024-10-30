@@ -8,6 +8,7 @@ import StanoviService from '../../services/StanoviService';
 import ZakupciService from '../../services/ZakupciService';
 import useLoading from "../../hooks/useLoading";
 
+
 // **********************************************************************************************************
 export default function NajmoviDodaj() {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function NajmoviDodaj() {
     const [stanSifra, setStanSifra] = useState(0);
     const [zakupci, setZakupci] = useState([]);
     const [zakupacSifra, setZakupacSifra] = useState(0);
+   
    
     // **********************************************************************************************************
     async function dohvatiStanove(){
