@@ -8,8 +8,7 @@ import { IoIosAdd } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useLoading from "../../hooks/useLoading";
 
-
-
+//**********************************************************************************
 export default function StanoviPregled() {
     const [stanovi, setStanovi] = useState([]);
     const [stranica, setStranica] = useState(1);
@@ -32,7 +31,6 @@ export default function StanoviPregled() {
         }
         setStanovi(odgovor.poruka);
     }
-    
     //***************************************************************************************
     useEffect(() => {
         dohvatiStanove();
@@ -73,6 +71,7 @@ export default function StanoviPregled() {
         }
     }
 
+    //***************************************************************************************
     function povecajStranicu() {
         setStranica(stranica + 1);
       }
@@ -134,7 +133,7 @@ export default function StanoviPregled() {
                       <Col>
                       <Link className="btn btn-primary gumb" to={`/stanovi/${p.idstanovi}`}><FaEdit /></Link>
                       </Col>
-                      <Col>
+                       <Col>
                       <Button variant="danger" className="gumb"  onClick={() => obrisi(p.idstanovi)}><FaTrash /></Button>
                       </Col>
                     </Row>

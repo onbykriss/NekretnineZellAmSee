@@ -16,14 +16,10 @@ export default function ZakupciPregled(){
     const { showLoading, hideLoading } = useLoading();
 
     // **************************************************************************************************************************************************
-    async function dohvatiZakupce() 
-    {
+    async function dohvatiZakupce() {
+
         showLoading();
-        showLoading
-        // zaustavi kod u Chrome consoli i tamo se može raditi debug
-        //debugger;
         const odgovor = await ZakupciService.getStranicenje(stranica, uvjet);
-        await ZakupciService.get()
         hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
@@ -35,15 +31,12 @@ export default function ZakupciPregled(){
         }
         setZakupci(odgovor.poruka);
     }
-    // npm run lint
-    // javlja upozorenje
-    // 28:7  warning  React Hook useEffect has a missing dependency: 'dohvatie'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+    // **************************************************************************************************************************************************
     useEffect(() => {
         dohvatiZakupce();
       }, [stranica, uvjet]);
    
 // ****************************************************************************************************************************************************
-
     async function obrisiAsync(idzakupci) {
         showLoading();
         const odgovor = await ZakupciService.brisanje(idzakupci);
@@ -56,7 +49,6 @@ export default function ZakupciPregled(){
         dohvatiZakupce();
     }
 
-// **************************************************************************************************************************************************
    function obrisi(idzakupci) {
         obrisiAsync(idzakupci);
     }
@@ -92,7 +84,6 @@ function povecajStranicu() {
   }
 
 // ****************************************************************************************************************************************************
-
 return(
     <>
        <Row>
@@ -109,7 +100,7 @@ return(
             <Col key={2} sm={12} lg={4} md={4}>
                 {zakupci && zakupci.length > 0 && (
                         <div style={{ display: "flex", justifyContent: "center" }}>
-                            <Pagination size="lg" key="pagination">
+                            <Pagination size="lg">
                             <Pagination.Prev onClick={smanjiStranicu} />
                             <Pagination.Item disabled>{stranica}</Pagination.Item> 
                             <Pagination.Next
@@ -130,21 +121,19 @@ return(
         
             
         <Row>
-            
-        { zakupci && zakupci.map((p) => (
-       <Col key={p.idzakupci} sm={12} lg={3} md={3}>
-          <Card style={{ marginTop: '1rem' }}>
-          <Card.Img variant="top" src={slika(p)} className="slika"/>
-            <Card.Body>
-            
+          { zakupci && zakupci.map((p) => (
+
+          <Col key={p.idzakupci} sm={12} lg={3} md={3}>
+           <Card style={{ marginTop: '1rem' }}>
+            <Card.Img variant="top" src={slika(p)} className="slika"/>
+             <Card.Body>
               <Card.Title>{p.ime} {p.prezime}</Card.Title>
               <Card.Text>{p.email}</Card.Text>
-
-              <Row>
+                <Row>
                   <Col>
-                  <Link className="btn btn-primary gumb" to={`/Zakupci/${p.idzakupci}`}><FaEdit /></Link>
+                  <Link className="btn btn-primary gumb" to={`/zakupci/${p.idzakupci}`}><FaEdit /></Link>
                   </Col>
-                  <Col>
+                   <Col>
                   <Button variant="danger" className="gumb"  onClick={() => obrisi(p.idzakupci)}><FaTrash /></Button>
                   </Col>
                 </Row>
@@ -157,7 +146,7 @@ return(
   <hr />
           {zakupci && zakupci.length > 0 && (
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <Pagination size="lg" key="pagination">
+                <Pagination size="lg">
                 <Pagination.Prev onClick={smanjiStranicu} />
                 <Pagination.Item disabled>{stranica}</Pagination.Item> 
                 <Pagination.Next
