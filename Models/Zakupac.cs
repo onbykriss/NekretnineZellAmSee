@@ -6,10 +6,12 @@ namespace NekretnineZellAmSee.Models
     public class Zakupac
     {
         [Key]
-        public int? Idzakupci { get; set; }
+        public int? idzakupci { get; set; }
         public string? Ime { get; set; }
         public string? Prezime { get; set; }
         public string? Email { get; set; }
         public string? Telefon { get; set; }
+
+        
     }
 }

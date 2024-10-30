@@ -3,7 +3,7 @@
     public record ZakupacDTORead(
 
 
-     int? Idzakupci,
+     int? idzakupci,
 
      string? Ime,
 

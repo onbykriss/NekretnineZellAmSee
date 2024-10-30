@@ -2,7 +2,7 @@
 {
     public record NajamDTORead(
 
-       int? Idnajmovi,
+       int? idnajmovi,
 
        string? StanAdresaNaziv,
 

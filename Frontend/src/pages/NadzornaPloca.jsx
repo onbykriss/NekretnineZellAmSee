@@ -1,52 +1,41 @@
 import { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
-import Highcharts from 'highcharts';
-import PieChart from 'highcharts-react-official';
 import Service from '../services/NajmoviService';
 import useLoading from '../hooks/useLoading';
+import useError from '../hooks/useError';
 
-// *********************************************************************************************************
 export default function NadzornaPloca() {
   const [podaci, setPodaci] = useState([]);
   const { showLoading, hideLoading } = useLoading();
+  const { prikaziError } = useError();
 
-  // *********************************************************************************************************
-  async function getPodaci() {
+   //*********************************************************************************************************  
+  function getPodaci() {
+  const { showLoading, hideLoading } = useLoading();
+  const { prikaziError } = useError();
+
+  return async () => {
     showLoading();
     const odgovor = await Service.grafNajam();
-    setPodaci(odgovor.map((Najam) => {
-      return {
-        y: Najam.ukupnoZakupca,
-        name: Najam.nazivNajmovi,
-      };
+   
+    if(!Array.isArray(odgovor.data)) {
+      console.error('Invalid response:', odgovor);
+      prikaziError();
+      return [];
+   
+    }
+    return odgovordata.map((Najam) => ({
+      y: Najam.ukupnoZakupca,
+      name: Najam.adresaNajma,
     }));
-    hideLoading();
-  }
-
-  useEffect(() => {
-    getPodaci();
-  }, []);
-
-  return (
-    <Container className='mt-4'>
-      {podaci.length > 0 && (
-        <PieChart
-          highcharts={Highcharts}
-          options={{
-            ...fixedOptions,
-            series: [
-              {
-                name: 'Zakupci',
-                colorByPoint: true,
-                data: podaci,
-              },
-            ],
-          }}
-        />
-      )}
-    </Container>
-  );
+  };
+ }
 }
+
+
+
+  // *********************************************************************************************************
+ 
+
 
 // *********************************************************************************************************
 const fixedOptions = {

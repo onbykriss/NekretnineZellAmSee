@@ -7,12 +7,12 @@ namespace NekretnineZellAmSee.Models
     {
         [Key]
         [Column("idnajmovi")]
-        public int? Idnajmovi { get; set; }
+        public int? idnajmovi { get; set; }
 
-        [ForeignKey("Idstanovi")]
+        [ForeignKey("idstanovi")]
         public Stan Stan { get; set; }
 
-        [ForeignKey("Idzakupci")]
+        [ForeignKey("idzakupci")]
         public Zakupac Zakupac { get; set; }
 
         public DateTime? DatumPocetka { get; set; }
@@ -20,5 +20,7 @@ namespace NekretnineZellAmSee.Models
 
         [Column("cijenanajma")]
         public decimal? CijenaNajma { get; set; }
+
+        
     }
 }

@@ -1,24 +1,35 @@
 import { HttpService } from "./HttpService";
 
+
 //****GET********************************************************************************************************
-async function get(){
+export async function get() {
+    try {
+        const response = await HttpService.get('/api/Najam');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching najmi data:', error);
+        throw error;
+    }
+}
+
+
+
+
+//************************************************************************************************************
+export async function grafNajam() {
     return await HttpService.get('/Najam')  
-    .then((odgovor)=>{
-        const updatedOdgovor = odgovor.data.map(item => ({
-            ...item,
-            cijena: item.cijena || null 
-        }));
-        return {greska: false, poruka: updatedOdgovor};
-    })
-    .catch((e)=>{
-        console.error('Greška kod dodavanja najma:', e);
-        return {greska: true, poruka: 'Problem kod dohvaćanja najmova'}   
-    })
+    try{
+        const response = await axios.get('/api/Najam'); // Replace with your actual API endpoint
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching najmi data:', error);
+        throw error;
+    }
 }
 
 //***BRISANJE*********************************************************************************************************
-async function obrisi(Idnajmovi){
-    return await HttpService.delete('/Najam/' + Idnajmovi)
+async function obrisi(idnajmovi){
+    return await HttpService.delete('/Najam/' + idnajmovi)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
@@ -48,8 +59,8 @@ async function dodaj(Najam) {
 }
 
 //****PROMJENA********************************************************************************************************
-async function promjena(Idnajmovi,najam){
-    return await HttpService.put('/Najam/' + Idnajmovi,najam)
+async function promjena(idnajmovi,najam){
+    return await HttpService.put('/Najam/' + idnajmovi,najam)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
@@ -69,19 +80,19 @@ async function promjena(Idnajmovi,najam){
 }
 
 //**GETBYSIFRA**********************************************************************************************************
-async function getBySifra(Idnajmovi){
-    return await HttpService.get('/Najam/'+ Idnajmovi)
+async function getBySifra(idnajmovi){
+    return await HttpService.get('/Najam/'+ idnajmovi)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
     .catch(()=>{
-        return {greska: true, poruka: 'Najam ne postoji '+ Idnajmovi}   
+        return {greska: true, poruka: 'Najam ne postoji '+ idnajmovi}   
     })
 }
 
 //***********************************************************************************************************	
-async function getZakupci(Idnajmovi){
-    return await HttpService.get('/Najam/Zakupci'+ Idnajmovi)
+async function getZakupci(idnajmovi){
+    return await HttpService.get('/Najam/Zakupci'+ idnajmovi)
     .then((odgovor)=>{
         //console.table(odgovor.data);
         return {greska: false, poruka: odgovor.data}
@@ -112,14 +123,7 @@ async function obrisiZakupca(Najam,Zakupac) {
 }
 
 //***********************************************************************************************************
-async function grafNajam(){
-    return await HttpService.get('/Najam/GrafNajam')
-    .then((odgovor)=>{
-        //console.table(odgovor.data);
-        return odgovor.data;
-    })
-    .catch((e)=>{console.error(e)})
-}
+
 
 //***********************************************************************************************************
 export default {
@@ -132,6 +136,7 @@ export default {
     getZakupci,
     dodajZakupca,
     obrisiZakupca,
-
     grafNajam
+
+   
 }

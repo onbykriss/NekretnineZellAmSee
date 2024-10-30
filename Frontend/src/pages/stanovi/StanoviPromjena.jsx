@@ -1,11 +1,10 @@
+import StanoviService from "../../services/StanoviService";
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { APP_URL, RouteNames } from "../../constants";
-import StanoviService from "../../services/StanoviService";
 import { useEffect, useState, useRef } from "react";
-
 import useLoading from "../../hooks/useLoading";
-
+import useError from '../../hooks/useError';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import nepoznato from '../../novo/nepoznato.png';
@@ -25,7 +24,7 @@ export default function StanoviPromjena() {
    //*************************************************************************************************************
        async function dohvatiStan() {
         showLoading();
-        const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
+        const odgovor = await StanoviService.getBySifra(routeParams.sifra);
         hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
@@ -98,7 +97,7 @@ export default function StanoviPromjena() {
       async function spremiSliku() {
         showLoading();
         const base64 = slikaZaServer;
-        const odgovor = await PolaznikService.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
+        const odgovor = await StanoviService.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
         hideLoading();
         if(odgovor.greska){
           alert(odgovor.podaci);

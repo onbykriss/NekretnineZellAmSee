@@ -59,7 +59,7 @@ namespace NekretnineZellAmSee.Controllers
                 najam = _context.Najmovi
                     .Include(n => n.Stan)
                     .Include(n => n.Zakupac)
-                    .FirstOrDefault(n => n.Idnajmovi == idnajmovi);
+                    .FirstOrDefault(n => n.idnajmovi == idnajmovi);
             }
             catch (Exception ex)
             {
@@ -90,8 +90,8 @@ namespace NekretnineZellAmSee.Controllers
 
             try
             {
-                stan = _context.Stanovi.Find(dto.Idstanovi);
-                zakupac = _context.Zakupci.Find(dto.Idzakupci);
+                stan = _context.Stanovi.Find(dto.idstanovi);
+                zakupac = _context.Zakupci.Find(dto.idzakupci);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace NekretnineZellAmSee.Controllers
                 najam.Zakupac = zakupac;
                 _context.Najmovi.Add(najam);
                 _context.SaveChanges();
-                return CreatedAtAction(nameof(GetBySifra), new { idnajmovi = najam.Idnajmovi }, _mapper.Map<NajamDTORead>(najam));
+                return CreatedAtAction(nameof(GetBySifra), new { idnajmovi = najam.idnajmovi }, _mapper.Map<NajamDTORead>(najam));
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace NekretnineZellAmSee.Controllers
                 najam = _context.Najmovi
                     .Include(n => n.Stan)
                     .Include(n => n.Zakupac)
-                    .FirstOrDefault(n => n.Idnajmovi == idnajmovi);
+                    .FirstOrDefault(n => n.idnajmovi == idnajmovi);
             }
             catch (Exception ex)
             {
@@ -151,8 +151,8 @@ namespace NekretnineZellAmSee.Controllers
             Zakupac? zakupac;
             try
             {
-                stan = _context.Stanovi.Find(dto.Idstanovi);
-                zakupac = _context.Zakupci.Find(dto.Idzakupci);
+                stan = _context.Stanovi.Find(dto.idstanovi);
+                zakupac = _context.Zakupci.Find(dto.idzakupci);
             }
             catch (Exception ex)
             {

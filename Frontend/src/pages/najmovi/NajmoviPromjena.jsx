@@ -9,7 +9,7 @@ import useLoading from "../../hooks/useLoading";
 
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import nepoznato from '../../novo/nepoznato.png';
+
 
 // *********************************************************************************************************
 

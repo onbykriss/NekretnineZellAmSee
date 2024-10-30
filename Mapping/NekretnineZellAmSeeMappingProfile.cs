@@ -10,7 +10,7 @@ namespace NekretnineZellAmSee.Mapping
         {
             
             CreateMap<Stan, StanDTORead>()
-            .ForCtorParam("Idstanovi", opt => opt.MapFrom(src => src.Idstanovi))
+            .ForCtorParam("idstanovi", opt => opt.MapFrom(src => src.idstanovi))
             .ForCtorParam("Kvadratura", opt => opt.MapFrom(src => src.Kvadratura))
             .ForCtorParam("Adresa", opt => opt.MapFrom(src => src.Adresa ?? ""))
             .ForCtorParam("Oprema", opt => opt.MapFrom(src => src.Oprema ?? ""))
@@ -18,6 +18,7 @@ namespace NekretnineZellAmSee.Mapping
             CreateMap<StanDTOInsertUpdate, Stan>();
 
             CreateMap<Zakupac, ZakupacDTORead>();
+
             CreateMap<ZakupacDTOInsertUpdate, Zakupac>();
 
             CreateMap<Najam, NajamDTORead>()
@@ -34,8 +35,8 @@ namespace NekretnineZellAmSee.Mapping
             {
                 var ds = Path.DirectorySeparatorChar;
                 string slika = Path.Combine(Directory.GetCurrentDirectory()
-                    + ds + "wwwroot" + ds + "slike" + ds + "stan" + ds + e.Idstanovi + ".png");
-                return File.Exists(slika) ? "/slike/stanovi/" + e.Idstanovi + ".png" : null;
+                    + ds + "wwwroot" + ds + "slike" + ds + "stan" + ds + e.idstanovi + ".png");
+                return File.Exists(slika) ? "/slike/stanovi/" + e.idstanovi + ".png" : null;
             }
             catch
             {

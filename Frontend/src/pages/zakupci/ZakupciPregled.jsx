@@ -44,7 +44,7 @@ export default function ZakupciPregled(){
    
 // ****************************************************************************************************************************************************
 
-    async function obrisiAsync(Idzakupci) {
+    async function obrisiAsync(idzakupci) {
         showLoading();
         hideLoading();
         //console.log(odgovor);
@@ -56,8 +56,8 @@ export default function ZakupciPregled(){
     }
 
 // **************************************************************************************************************************************************
-   function obrisi(Idzakupci) {
-        obrisiAsync(Idzakupci);
+   function obrisi(idzakupci) {
+        obrisiAsync(idzakupci);
     }
 
     // **************************************************************************************************************************************************
@@ -131,7 +131,7 @@ return(
         <Row>
             
         { zakupci && zakupci.map((p) => (
-       <Col key={p.Idzakupci} sm={12} lg={3} md={3}>
+       <Col key={p.idzakupci} sm={12} lg={3} md={3}>
           <Card style={{ marginTop: '1rem' }}>
           <Card.Img variant="top" src={slika(p)} className="slika"/>
             <Card.Body>
@@ -141,10 +141,10 @@ return(
 
               <Row>
                   <Col>
-                  <Link className="btn btn-primary gumb" to={`/zakupci/${p.Idzakupci}`}><FaEdit /></Link>
+                  <Link className="btn btn-primary gumb" to={`/Zakupci/${p.idzakupci}`}><FaEdit /></Link>
                   </Col>
                   <Col>
-                  <Button variant="danger" className="gumb"  onClick={() => obrisi(p.Idzakupci)}><FaTrash /></Button>
+                  <Button variant="danger" className="gumb"  onClick={() => obrisi(p.idzakupci)}><FaTrash /></Button>
                   </Col>
                 </Row>
             </Card.Body>

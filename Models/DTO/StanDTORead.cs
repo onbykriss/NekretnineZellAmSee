@@ -3,7 +3,7 @@
     public record StanDTORead(
 
 
-         int? Idstanovi,
+         int? idstanovi,
 
          int? Kvadratura,
 

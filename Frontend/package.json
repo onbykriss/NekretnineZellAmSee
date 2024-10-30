@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && rmdir ..\\CSHARP\\Ucenje\\EdunovaApp\\wwwroot /s /q && move /y dist ../CSHARP/Ucenje/EdunovaApp/wwwroot",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

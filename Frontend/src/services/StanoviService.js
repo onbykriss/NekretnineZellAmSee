@@ -11,9 +11,9 @@ async function get() {
 }
 
 //****BRISANJE********************************************************************************************************
-async function brisanje(Idstanovi){
+async function brisanje(idstanovi){
 
-    return await HttpService.delete('/Stan/' + Idstanovi)
+    return await HttpService.delete('/Stan/' + idstanovi)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
@@ -33,8 +33,7 @@ async function dodaj(Stan){
             case 400:
                  let poruke = '';
                  for(const kljuc in e.response.data.errors){
-                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0] + '\n';
-                    }  
+                        poruke += kljuc + ':' + e.response.data.errors[kljuc][0];                    }  
                     return {greska: true, poruka: poruke}  
             default:
                 return {greska: true, poruka: 'stan se nemože dodati'}
@@ -43,8 +42,8 @@ async function dodaj(Stan){
 }
 
 //****PROMJENA********************************************************************************************************
-async function promjena(Idstanovi, Stan){
-    return await HttpService.put('/Stan/' + Idstanovi, Stan)
+async function promjena(idstanovi, Stan){
+    return await HttpService.put('/Stan/' + idstanovi, Stan)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
@@ -63,8 +62,8 @@ async function promjena(Idstanovi, Stan){
 }
 
 //**GETBYSIFRA**********************************************************************************************************
-async function getBySifra(Idstanovi){
-    return await HttpService.get('/Stan/'+ Idstanovi)
+async function getBySifra(idstanovi){
+    return await HttpService.get('/Stan/'+ idstanovi)
     .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
@@ -108,7 +107,7 @@ async function ukupnoStanova(){
 
 //************************************************************************************************************
 async function dostupniStanovi(){
-    return await HttpService.get('/Pocetna/Dostupnistanovi')
+    return await HttpService.get('/Pocetna/DostupniStanovi')
     .then((odgovor)=>{
         //console.table(odgovor.data);
         return odgovor.data;

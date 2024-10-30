@@ -33,10 +33,10 @@ export default function Pocetna(){
 
     // *********************************************************************************************************
     async function ucitajPodatke() {
-        showLoading();
+        
         await dohvatiStanove();
         await dohvatiBrojZakupca();
-        hideLoading();
+       ;
       }
 
     // *********************************************************************************************************

@@ -39,7 +39,7 @@ export default function StanoviPregled() {
     }, [stranica, uvjet]);
 
     //***************************************************************************************
-    async function obrisiAsync(Idstanovi) {
+    async function obrisiAsync(idstanovi) {
         showLoading();
         hideLoading();
         //console.log(odgovor);
@@ -50,8 +50,8 @@ export default function StanoviPregled() {
         dohvatiStanove();
     }
     
-    function obrisi(Idstanovi){
-        obrisiAsync(Idstanovi);
+    function obrisi(idstanovi){
+        obrisiAsync(idstanovi);
     }
     
     //***************************************************************************************
@@ -131,10 +131,10 @@ export default function StanoviPregled() {
                   <Card.Text>{p.email}</Card.Text>
                     <Row>
                       <Col>
-                      <Link className="btn btn-primary gumb" to={`/stanovi/${p.Idstanovi}`}><FaEdit /></Link>
+                      <Link className="btn btn-primary gumb" to={`/stanovi/${p.idstanovi}`}><FaEdit /></Link>
                       </Col>
                       <Col>
-                      <Button variant="danger" className="gumb"  onClick={() => obrisi(p.stanovi)}><FaTrash /></Button>
+                      <Button variant="danger" className="gumb"  onClick={() => obrisi(p.idstanovi)}><FaTrash /></Button>
                       </Col>
                     </Row>
                 </Card.Body>
@@ -157,5 +157,4 @@ export default function StanoviPregled() {
                 )}
         </>
     )
-
 }

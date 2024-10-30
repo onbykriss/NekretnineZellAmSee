@@ -13,12 +13,16 @@ import ZakupciPromjena from './pages/zakupci/ZakupciPromjena'
 import NajmoviPregled from './pages/najmovi/NajmoviPregled'
 import NajmoviDodaj from './pages/najmovi/NajmoviDodaj'
 import NajmoviPromjena from './pages/najmovi/NajmoviPromjena'
+
 import LoadingSpinner from './Components/LoadingSpinner'
-import Pocetna from './pages/Pocetna'
+import NAdzornaPloca from './pages/NAdzornaPloca'
+import useError from "./hooks/useError"
+import ErrorModal from "./components/ErrorModal"
 
 // *********************************************************************************************************
 function App() {
 
+  const { errors, prikaziErrorModal, sakrijError } = useError();
 
   function godina(){
     const pocenta = 2024;
@@ -33,10 +37,11 @@ function App() {
   return (
     <>
     <LoadingSpinner />
+    <ErrorModal show={prikaziErrorModal} errors={errors} onHide={sakrijError} />
     <Container className='aplikacija'>
       <NavBarNekretnine />
       <Routes>
-        <Route path={RouteNames.HOME} element={<Pocetna/>} />
+        <Route path={RouteNames.HOME} element={<NAdzornaPloca/>} />
        
         <Route path={RouteNames.STANOVI_PREGLED} element={<StanoviPregled />} />
         <Route path={RouteNames.STANOVI_NOVI} element={<StanoviDodaj />} />

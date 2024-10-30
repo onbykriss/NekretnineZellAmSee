@@ -11,8 +11,8 @@ async function get() {
 }
 
 //****BRISANJE**********************************************************************************************************
-async function brisanje(Idzakupci) {
-    return await HttpService.delete('/Zakupac/' + Idzakupci)
+async function brisanje(idzakupci) {
+    return await HttpService.delete('/Zakupac/' + idzakupci)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data }
         })
@@ -42,8 +42,8 @@ async function dodaj(Zakupac) {
 }
 
 //******PROMJENA********************************************************************************************************
-async function promjena(Idzakupci, Zakupac) {
-    return await HttpService.put('/Zakupac/' + Idzakupci, Zakupac)
+async function promjena(idzakupci, Zakupac) {
+    return await HttpService.put('/Zakupac/' + idzakupci, Zakupac)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data };
         })
@@ -62,8 +62,8 @@ async function promjena(Idzakupci, Zakupac) {
 }
 
 //****GETBYSIFRA**********************************************************************************************************
-async function getBySifra(Idzakupci) {
-    return await HttpService.get('/Zakupac/' + Idzakupci)
+async function getBySifra(idzakupci) {
+    return await HttpService.get('/Zakupac/' + idzakupci)
         .then((odgovor) => {
             return { greska: false, poruka: odgovor.data }
         })
@@ -90,8 +90,8 @@ async function getStranicenje(stranica,uvjet){
   }
 
 //**************************************************************************************************************
-  async function postaviSliku(Idzakupci, slika) {
-    return await HttpService.put('/Zakupac/postaviSliku/' + Idzakupci, slika)
+  async function postaviSliku(idzakupci, slika) {
+    return await HttpService.put('/Zakupac/postaviSliku/' + idzakupci, slika)
     .then((odgovor)=>{return  {greska: false, poruka: odgovor.data};})
     .catch((e)=>{ return {greska: true, poruka: 'Problem kod postavljanja slike zakupca '}});
   }

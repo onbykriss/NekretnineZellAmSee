@@ -1,18 +1,40 @@
 import NajmoviService from "../../services/NajmoviService";
+import Service from "../../services/NajmoviService";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../../constants";
-import { TbDecimal } from "react-icons/tb";
 import useLoading from "../../hooks/useLoading";
+import useError from '../../hooks/useError';
+import StanoviService from "../../services/StanoviService";
 
 // **********************************************************************************************************
 export default function NajmoviDodaj() {
     const navigate = useNavigate();
     const { showLoading, hideLoading } = useLoading();
+    const [stanovi, setStanovi] = useState([]);
+    const [idstanovi, setidstanovi] = useState(0);
+    const { prikaziError } = useError();
 
-    async function Dodaj(najam) {
+    // **********************************************************************************************************
+    async function dohvatiStanove(){
+        showLoading();
+        const odgovor = await StanoviService.get();
+        hideLoading();
+        setStanovi(odgovor.poruka);
+        setidstanovi(odgovor.poruka[0].sifra
+        );
+      }
+    
+      useEffect(()=>{
+        dohvatiStanove();
+    }, []);
 
-        const odgovor = await NajmoviService.dodaj(najam)
+
+    // **********************************************************************************************************
+    async function dodaj(e) {
+        showLoading();
+        const odgovor = await Service.dodaj(e)
+        hideLoading();
         if(odgovor.greska){
             alert(odgovor.poruka)
             return;
@@ -20,12 +42,12 @@ export default function NajmoviDodaj() {
         navigate(RouteNames.NAJMOVI_PREGLED)
     }
 
+    // **********************************************************************************************************
     async function obradiSubmit(e) {
-        showLoading();
         e.preventDefault();
-        let podaci = new FormData(e.target)
-        hideLoading();
-        Dodaj({
+        const podaci = new FormData(e.target)
+       
+        dodaj({
             idstanovi: parseInt(podaci.get('idstanovi')),
             idzakupci: parseInt(podaci.get('idzakupci')),
             datumPocetka: podaci.get('datumPocetka'),
@@ -37,11 +59,11 @@ export default function NajmoviDodaj() {
     // **********************************************************************************************************
     return (
         <>
-            Dodavanje Najmova
+            Dodavanje novog najma
             
             <Form onSubmit={obradiSubmit}>
             <Form.Group controlId="idstanovi">
-                    <Form.Label>stanovi_idstanovi</Form.Label>
+                    <Form.Label>Stanovi</Form.Label>
                     <Form.Control
                         type="number"
                         name="idstanovi"
@@ -49,8 +71,19 @@ export default function NajmoviDodaj() {
                     />
                 </Form.Group>
 
+                <Form.Group className='mb-3' controlId='stanovi'>
+                   <Form.Label>Stan</Form.Label>
+                <Form.Select 
+                      onChange={(e)=>{setidstanovi(e.target.value)}}
+                      >
+                         {stanovi && stanovi.map((s,index)=>(
+                       <option key={index} value={s.idstanovi}> 
+                      {s.naziv}</option>))}
+                  </Form.Select>
+                </Form.Group>
+
                 <Form.Group controlId="idzakupci">
-                    <Form.Label>zakupci_Idzakupci</Form.Label>
+                    <Form.Label>Zakupci_</Form.Label>
                     <Form.Control
                         type="number"
                         name="idzakupci"

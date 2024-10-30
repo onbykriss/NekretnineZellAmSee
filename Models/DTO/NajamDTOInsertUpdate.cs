@@ -5,10 +5,10 @@ namespace NekretnineZellAmSee.Models.DTO
     public record NajamDTOInsertUpdate(
 
         [Required(ErrorMessage ="Obavezan idstana")]
-         int? Idstanovi,
+         int? idstanovi,
 
         [Required(ErrorMessage ="Obavezan idzakupca")]
-         int? Idzakupci,
+         int? idzakupci,
 
          [Required(ErrorMessage ="Obavezan datum početka")]
          DateTime? DatumPocetka,
