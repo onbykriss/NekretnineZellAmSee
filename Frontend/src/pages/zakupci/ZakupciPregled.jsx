@@ -46,6 +46,7 @@ export default function ZakupciPregled(){
 
     async function obrisiAsync(idzakupci) {
         showLoading();
+        const odgovor = await ZakupciService.brisanje(idzakupci);
         hideLoading();
         //console.log(odgovor);
         if(odgovor.greska){

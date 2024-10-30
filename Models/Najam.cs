@@ -7,7 +7,7 @@ namespace NekretnineZellAmSee.Models
     {
         [Key]
         [Column("idnajmovi")]
-        public int? idnajmovi { get; set; }
+        public int idnajmovi { get; set; }
 
         [ForeignKey("idstanovi")]
         public Stan Stan { get; set; }

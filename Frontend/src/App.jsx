@@ -45,15 +45,15 @@ function App() {
        
         <Route path={RouteNames.STANOVI_PREGLED} element={<StanoviPregled />} />
         <Route path={RouteNames.STANOVI_NOVI} element={<StanoviDodaj />} />
-        <Route path="/stanovi/promjena/:idstanovi" element={<StanoviPromjena />} />
+        <Route path={RouteNames.STANOVI_PROMJENA} element={<StanoviPromjena />} />
         
         <Route path={RouteNames.ZAKUPCI_PREGLED} element={<ZakupciPregled />} />  
         <Route path={RouteNames.ZAKUPCI_NOVI} element={<ZakupciDodaj />} />
-        <Route path="/zakupci/promjena/:idzakupci" element={<ZakupciPromjena />} />
+        <Route path={RouteNames.ZAKUPCI_PROMJENA} element={<ZakupciPromjena />} />
          
         <Route path={RouteNames.NAJMOVI_PREGLED} element={<NajmoviPregled />} />
         <Route path={RouteNames.NAJMOVI_NOVI} element={<NajmoviDodaj />} />
-        <Route path="/najmovi/promjena/:idnajmovi" element={<NajmoviPromjena />} />
+        <Route path={RouteNames.NAJMOVI_PROMJENA} element={<NajmoviPromjena />} />
       
         
       </Routes>

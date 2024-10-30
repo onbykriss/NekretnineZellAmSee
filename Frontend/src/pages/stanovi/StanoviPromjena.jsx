@@ -24,7 +24,7 @@ export default function StanoviPromjena() {
    //*************************************************************************************************************
        async function dohvatiStan() {
         showLoading();
-        const odgovor = await StanoviService.getBySifra(routeParams.sifra);
+        const odgovor = await StanoviService.getBySifra(routeParams.idstanovi);
         hideLoading();
         if (odgovor.greska) {
             alert(odgovor.poruka);
@@ -97,7 +97,7 @@ export default function StanoviPromjena() {
       async function spremiSliku() {
         showLoading();
         const base64 = slikaZaServer;
-        const odgovor = await StanoviService.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
+        const odgovor = await StanoviService.postaviSliku(routeParams.idstanovi, {Base64: base64.replace('data:image/png;base64,', '')});
         hideLoading();
         if(odgovor.greska){
           alert(odgovor.podaci);
@@ -166,19 +166,6 @@ export default function StanoviPromjena() {
                     </Col>
                 </Row>
                 <hr />
-                <Row>
-                    <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
-                    <Link to={RouteNames.POLAZNIK_PREGLED}
-                    className="btn btn-danger siroko">
-                    Odustani
-                    </Link>
-                    </Col>
-                    <Col xs={6} sm={6} md={9} lg={6} xl={6} xxl={6}>
-                    <Button variant="primary" type="submit" className="siroko">
-                        Promjeni stan
-                    </Button>
-                    </Col>
-                </Row>
             </Form> 
             </Col>
         <Col key='2' sm={12} lg={6} md={6}>

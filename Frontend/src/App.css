@@ -34,3 +34,7 @@
 .brojZakupca{
   font-size: 5rem;
 }
+
+.slika{
+  max-width: 300px;
+}

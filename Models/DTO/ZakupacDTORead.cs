@@ -11,7 +11,8 @@
 
      string? Email,
 
-     string? Telefon
+     string? Telefon,
+     string Slika
 
     );
 }

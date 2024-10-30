@@ -41,6 +41,7 @@ export default function StanoviPregled() {
     //***************************************************************************************
     async function obrisiAsync(idstanovi) {
         showLoading();
+        const odgovor = await StanoviService.brisanje(idstanovi);
         hideLoading();
         //console.log(odgovor);
         if(odgovor.greska){

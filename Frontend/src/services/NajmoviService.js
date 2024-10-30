@@ -4,7 +4,7 @@ import { HttpService } from "./HttpService";
 //****GET********************************************************************************************************
 export async function get() {
     try {
-        const response = await HttpService.get('/api/Najam');
+        const response = await HttpService.get('/Najam');
         return response.data;
     } catch (error) {
         console.error('Error fetching najmi data:', error);
@@ -15,17 +15,6 @@ export async function get() {
 
 
 
-//************************************************************************************************************
-export async function grafNajam() {
-    return await HttpService.get('/Najam')  
-    try{
-        const response = await axios.get('/api/Najam'); // Replace with your actual API endpoint
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching najmi data:', error);
-        throw error;
-    }
-}
 
 //***BRISANJE*********************************************************************************************************
 async function obrisi(idnajmovi){
@@ -135,8 +124,7 @@ export default {
 
     getZakupci,
     dodajZakupca,
-    obrisiZakupca,
-    grafNajam
+    obrisiZakupca
 
    
 }

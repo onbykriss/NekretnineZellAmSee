@@ -73,7 +73,7 @@ export default function NajmoviPregled(){
                             <td className="sredina">
                                 <Button
                                     variant='primary'
-                                    onClick={() => navigate(`/najmovi/promjena/${najam.idnajmovi}`)}
+                                    onClick={() => navigate(`/Najmovi/${najam.idnajmovi}`)}
                                 >
                                     <FaEdit 
                                         size={25}

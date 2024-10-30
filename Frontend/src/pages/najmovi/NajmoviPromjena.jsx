@@ -1,14 +1,14 @@
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { APP_URL, RouteNames } from "../../constants";
-import StanoviService from "../../services/StanoviService";
-import { useEffect, useState, useRef } from "react";
+import NajmoviService from "../../services/NajmoviService";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import StanoviService from '../../services/StanoviService';
 
 // Import useLoading only once
 import useLoading from "../../hooks/useLoading";
 
-import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
 
 
 // *********************************************************************************************************
@@ -18,18 +18,32 @@ export default function NajmoviPromjena() {
     const {idnajmovi} = useParams();
     const [najam, setNajam] = useState({});
     const { showLoading, hideLoading } = useLoading();
+    const routeParams = useParams();
+    const [stanovi, setStanovi] = useState([]);
+  const [stanSifra, setStanSifra] = useState(0);
+
+  async function dohvatiStanove(){
+    const odgovor = await StanoviService.get();
+    setStanovi(odgovor);
+  }
 
     async function dohvatiNajam() {
-        const odgovor = await NajmoviService.getBySifra(idnajmovi);
+        const odgovor = await NajmoviService.getBySifra(routeParams.idnajmovi);
         if (odgovor.greska) {
             alert(odgovor.poruka);
             return;
         }
-        setNajam(odgovor.poruka);
+        let n = odgovor.poruka;
+        n.datumPocetka = moment.utc(n.datumPocetka).format('yyyy-MM-DD')
+        n.datumZavrsetka = moment.utc(n.datumZavrsetka).format('yyyy-MM-DD')
+        setNajam(n);
+        setStanSifra(n.idstanovi)
     }
 
     useEffect(() => {
+        dohvatiStanove();
         dohvatiNajam();
+
     }, [idnajmovi]);
 
 // *********************************************************************************************************
@@ -51,7 +65,7 @@ export default function NajmoviPromjena() {
         const podaci = new FormData(e.target);
 
         promjena({
-            idstanovi: parseInt(podaci.get('idstanovi')),
+            idstanovi: parseInt(stanSifra),
             idzakupci: parseInt(podaci.get('idzakupci')),
             datumPocetka: podaci.get('datumPocetka'),
             datumZavrsetka: podaci.get('datumZavrsetka'),
@@ -95,11 +109,16 @@ export default function NajmoviPromjena() {
                 
                 <Form.Group controlId="idstanovi">
                     <Form.Label>Stan</Form.Label>
-                    <Form.Control 
-                    type="number" 
-                    name="idstanovi" 
-                    required 
-                    defaultValue={najam.idstanovi}/>
+                    <Form.Select
+                value={stanSifra}
+                onChange={(e)=>{setStanSifra(e.target.value)}}
+                >
+                {stanovi && stanovi.map((s,index)=>(
+                  <option key={index} value={s.idstanovi}>
+                    {s.adresa}
+                  </option>
+                ))}
+                </Form.Select>
                 </Form.Group>
 
                 <Form.Group controlId="idzakupci">

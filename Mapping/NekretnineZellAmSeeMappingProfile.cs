@@ -14,10 +14,11 @@ namespace NekretnineZellAmSee.Mapping
             .ForCtorParam("Kvadratura", opt => opt.MapFrom(src => src.Kvadratura))
             .ForCtorParam("Adresa", opt => opt.MapFrom(src => src.Adresa ?? ""))
             .ForCtorParam("Oprema", opt => opt.MapFrom(src => src.Oprema ?? ""))
-            .ForCtorParam("Slika", opt => opt.MapFrom(src => PutanjaDatoteke(src)));
+            .ForCtorParam("Slika", opt => opt.MapFrom(src => PutanjaDatoteke(src.idstanovi,"stan")));
             CreateMap<StanDTOInsertUpdate, Stan>();
 
-            CreateMap<Zakupac, ZakupacDTORead>();
+            CreateMap<Zakupac, ZakupacDTORead>()
+            .ForCtorParam("Slika", opt => opt.MapFrom(src => PutanjaDatoteke(src.idzakupci, "zakupac"))); ;
 
             CreateMap<ZakupacDTOInsertUpdate, Zakupac>();
 
@@ -25,18 +26,22 @@ namespace NekretnineZellAmSee.Mapping
                 .ForCtorParam("StanAdresaNaziv", opt => opt.MapFrom(src => src.Stan.Adresa))
                 .ForCtorParam("ZakupacImePrezime", opt => opt.MapFrom(src => src.Zakupac.Ime + " " + src.Zakupac.Prezime));
 
+            CreateMap<Najam, NajamDTOInsertUpdate>()
+                .ForCtorParam("Idstanovi", opt => opt.MapFrom(src => src.Stan.idstanovi))
+                .ForCtorParam("Idzakupci", opt => opt.MapFrom(src => src.Zakupac.idzakupci));
+
             CreateMap<NajamDTOInsertUpdate, Najam>();
 
         }
 
-        private static string? PutanjaDatoteke(Stan e)
+        private static string? PutanjaDatoteke(int id,string dirSlika)
         {
             try
             {
                 var ds = Path.DirectorySeparatorChar;
                 string slika = Path.Combine(Directory.GetCurrentDirectory()
-                    + ds + "wwwroot" + ds + "slike" + ds + "stan" + ds + e.idstanovi + ".png");
-                return File.Exists(slika) ? "/slike/stanovi/" + e.idstanovi + ".png" : null;
+                    + ds + "wwwroot" + ds + "slike" + ds + dirSlika + ds + id + ".png");
+                return File.Exists(slika) ? "/slike/"  + dirSlika + "/" + id + ".png" : null;
             }
             catch
             {

@@ -24,13 +24,13 @@ export default function ZakupciPromjena(){
     //*********************************************************************************************************
     async function dohvatiZakupca(){
         showLoading();
-        const odgovor = await ZakupciService.getBySifra(routeParams.sifra);
+        const odgovor = await ZakupciService.getBySifra(routeParams.idzakupci);
         hideLoading();
         if(odgovor.greska){
             prikaziError(odgovor.poruka);
             return;
         }
-        setPolaznik(odgovor.poruka);
+        setZakupac(odgovor.poruka);
 
         if(odgovor.poruka.slika!=null){
             setTrenutnaSlika(APP_URL + odgovor.poruka.slika + `?${Date.now()}`); // ovaj Date je da uvijek dovuče zadnju sliku
@@ -99,7 +99,7 @@ export default function ZakupciPromjena(){
     async function spremiSliku() {
         showLoading();
         const base64 = slikaZaServer;
-        const odgovor = await ZakupciService.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
+        const odgovor = await ZakupciService.postaviSliku(routeParams.idzakupci, {Base64: base64.replace('data:image/png;base64,', '')});
         hideLoading();
         if(odgovor.greska){
           alert(odgovor.podaci);
@@ -188,19 +188,7 @@ return(
                     </Col>
                 </Row>
                 <hr />
-                <Row>
-                    <Col xs={6} sm={6} md={3} lg={6} xl={6} xxl={6}>
-                    <Link to={RouteNames.ZAKUPCI_PREGLED}
-                    className="btn btn-danger siroko">
-                    Odustani
-                    </Link>
-                    </Col>
-                    <Col xs={6} sm={6} md={9} lg={6} xl={6} xxl={6}>
-                    <Button variant="primary" type="submit" className="siroko">
-                        Promjeni stan
-                    </Button>
-                    </Col>
-                </Row>
+                
             </Form> 
             </Col>
         <Col key='2' sm={12} lg={6} md={6}>

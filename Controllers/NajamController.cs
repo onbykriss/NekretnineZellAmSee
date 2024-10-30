@@ -46,7 +46,7 @@ namespace NekretnineZellAmSee.Controllers
         //*************************************************************************************************************
 
         [HttpGet("{idnajmovi:int}")]
-        public ActionResult<NajamDTORead> GetBySifra(int idnajmovi)
+        public ActionResult<NajamDTOInsertUpdate> GetBySifra(int idnajmovi)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace NekretnineZellAmSee.Controllers
                 return NotFound(new { poruka = "Najam ne postoji u bazi" });
             }
 
-            return Ok(_mapper.Map<NajamDTORead>(najam));
+            return Ok(_mapper.Map<NajamDTOInsertUpdate>(najam));
         }
 
         //**********************************************************************************************************
@@ -90,8 +90,8 @@ namespace NekretnineZellAmSee.Controllers
 
             try
             {
-                stan = _context.Stanovi.Find(dto.idstanovi);
-                zakupac = _context.Zakupci.Find(dto.idzakupci);
+                stan = _context.Stanovi.Find(dto.Idstanovi);
+                zakupac = _context.Zakupci.Find(dto.Idzakupci);
             }
             catch (Exception ex)
             {
@@ -151,8 +151,8 @@ namespace NekretnineZellAmSee.Controllers
             Zakupac? zakupac;
             try
             {
-                stan = _context.Stanovi.Find(dto.idstanovi);
-                zakupac = _context.Zakupci.Find(dto.idzakupci);
+                stan = _context.Stanovi.Find(dto.Idstanovi);
+                zakupac = _context.Zakupci.Find(dto.Idzakupci);
             }
             catch (Exception ex)
             {
