@@ -33,8 +33,6 @@ export default function NajmoviDodaj() {
         setZakupci(odgovor);}
     
     
-      
-    
         useEffect(() => {
             dohvatiStanove();
             dohvatiZakupce();
