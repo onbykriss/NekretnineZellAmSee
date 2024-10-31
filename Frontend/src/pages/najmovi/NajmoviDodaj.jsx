@@ -27,32 +27,19 @@ export default function NajmoviDodaj() {
     async function dohvatiStanove(){
         const odgovor = await StanoviService.get();
         setStanovi(odgovor);}
-    
+
       async function dohvatiZakupce(){
         const odgovor = await ZakupciService.get();
         setZakupci(odgovor);}
     
     
-        async function dohvatiNajam() {
-            const odgovor = await NajmoviService.getBySifra(routeParams.idnajmovi);
-            if (odgovor.greska) {
-                alert(odgovor.poruka);
-                return;
-            }
-            let n = odgovor.poruka;
-            n.datumPocetka = moment.utc(n.datumPocetka).format('yyyy-MM-DD')
-            n.datumZavrsetka = moment.utc(n.datumZavrsetka).format('yyyy-MM-DD')
-            setNajam(n);
-            setStanSifra(n.idstanovi)
-            setZakupacSifra(n.idzakupci || zakupacSifra)
-        }
+      
     
         useEffect(() => {
             dohvatiStanove();
-            dohvatiNajam();
             dohvatiZakupce();
     
-        }, [idnajmovi]);
+        }, []);
 
 
     // **********************************************************************************************************
@@ -66,7 +53,7 @@ export default function NajmoviDodaj() {
         }
 
 
-        const odgovor = await NajmoviService.dodaj(idnajmovi, najam);
+        const odgovor = await NajmoviService.dodaj(najam);
         hideLoading();
         if(odgovor.greska){
             alert(odgovor.poruka)
@@ -116,8 +103,7 @@ export default function NajmoviDodaj() {
                     <Form.Control 
                     type="date" 
                     name="datumPocetka" 
-                    required 
-                    defaultValue={najam.datumPocetka}/>
+                    required />
                 </Form.Group>
 
                 <Form.Group controlId="datumZavrsetka">
@@ -125,8 +111,7 @@ export default function NajmoviDodaj() {
                     <Form.Control 
                     type="date" 
                     name="datumZavrsetka" 
-                    required 
-                    defaultValue={najam.datumZavrsetka}/>
+                    required />
                 </Form.Group>
 
                 <Form.Group controlId="cijenaNajma">
@@ -134,8 +119,7 @@ export default function NajmoviDodaj() {
                     <Form.Control 
                     type="number" 
                     name="cijenaNajma" 
-                    required 
-                    defaultValue={najam.cijenaNajma}/>
+                    required />
                 </Form.Group>
 
 
@@ -183,7 +167,7 @@ export default function NajmoviDodaj() {
                     </Col>
                     <Col xs={6} sm={12} md={3} lg={6} xl={6} xxl={6}>
                       <Button variant="success" type="submit" className="siroko">
-                         Dodaj stan
+                         Dodaj Najam
                       </Button>
                     </Col>
                 </Row>

@@ -27,7 +27,7 @@ async function obrisi(idnajmovi){
 //****DODAJ********************************************************************************************************
 async function dodaj(Najam) {
     return await HttpService.post('/Najam', Najam)
-    .then(()=>{
+    .then((odgovor)=>{
         return {greska: false, poruka: odgovor.data}
     })
     .catch((e)=>{
